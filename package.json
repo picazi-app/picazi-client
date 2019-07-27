@@ -1,0 +1,69 @@
+{
+  "name": "my-reduxtagram",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/history": "^4.7.2",
+    "@types/jest": "24.0.15",
+    "@types/mocha": "^5.2.7",
+    "@types/reach__router": "^1.2.4",
+    "@types/react-addons-css-transition-group": "^15.0.5",
+    "@types/react-router": "^4.4.5",
+    "@types/react-router-redux": "^5.0.18",
+    "@types/redux": "^3.6.0",
+    "autoprefixer": "^9.6.1",
+    "autoprefixer-stylus": "^0.14.0",
+    "history": "^4.9.0",
+    "mocha": "^6.2.0",
+    "poststylus": "^1.0.0",
+    "raven": "^2.3.0",
+    "raven-js": "^3.27.2",
+    "react": "^16.8.6",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^5.0.1",
+    "react-router-redux": "next",
+    "react-scripts": "3.0.1",
+    "redux": "^4.0.4",
+    "styl": "^0.2.9",
+    "style-loader": "^0.23.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "typescript": "3.5.3"
+  },
+  "scripts": {
+    "build-css": "stylus -c src/static/stylus/ --out src/static/css",
+    "watch-css": "npm run build-css && stylus -c -w src/static/stylus/ --out src/static/css",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build-js": "react-scripts build",
+    "build": "npm-run-all build-css build-js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^12.6.8",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.5",
+    "@types/react-redux": "^7.1.1",
+    "@types/react-router-dom": "^4.3.4",
+    "@types/redux-devtools-extension": "^2.13.2",
+    "css-loader": "^3.1.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
