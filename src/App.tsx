@@ -1,6 +1,7 @@
 import React from 'react';
 import  { render } from 'react-dom';
-
+import LoginPage from './components/LoginPage'
+import RegisterPage from './components/SignUpPage';
 // import css
 
 
@@ -17,7 +18,9 @@ import {
 export const router = (
 	<Provider store={store}>
 		<BrowserRouter>
-      <Route path="/" component={App}/>
+      <Route exact path="/" component={App}/>
+      <Route path="/login" component={LoginPage} />
+      <Route path="/signup" component={RegisterPage} />
 		</BrowserRouter>
 	</Provider>
 )

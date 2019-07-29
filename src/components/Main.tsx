@@ -38,6 +38,10 @@ class Main extends React.Component<Props> {
     console.log(match)
 		return(
 			<div>
+        <div>
+        <Link to="/login"><button>Login</button></Link>
+        <Link to="/signup"><button>SignUp</button></Link>
+        </div>
 				<h1>
 					<Link to="/">Reduxstagram</Link>
 				</h1>
