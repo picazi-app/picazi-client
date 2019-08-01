@@ -1,18 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
-import { Post } from '../store/types/posts';
-import { UserComments, Comment } from '../store/types/comments'
+import { Post } from '../screens/Post/store/types';
+
 interface PhotoProps {
   post: Post;
-  comments: UserComments;
-  index: number;
-  increment: (index:number) => void;
 }
 
 class Photo extends React.Component<PhotoProps> {
 	render(){
-    const { post, index, comments } = this.props;
+    const { post } = this.props;
 		return(
 			<figure className="grid-figure">
 				<div className="grid-photo-wrap">
@@ -30,11 +27,11 @@ class Photo extends React.Component<PhotoProps> {
 				<figcaption>
 					<p>{post.caption}</p>
 					<div className="control-buttons">
-						<button onClick={this.props.increment.bind(null, index)} className="likes">&hearts; {post.likes}</button>
+						<button className="likes">&hearts; {post.likes}</button>
 						<Link className="button" to={`/view/${post.code}`}>
 							<span className="comment-count">
 								<span className="speech-bubble"></span>
-								{comments[post.code] ? comments[post.code].length : 0}
+								{post.totalComments}
 							</span>
 						</Link>
 					</div>

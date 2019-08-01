@@ -1,15 +1,9 @@
-import { Comment } from '../store/types/comments';
-
 export enum ActionTypes {
-  INCREMENT_LIKES = "INCREMENT_LIKES",
   ADD_COMMENT = "ADD_COMMENT",
-  REMOVE_COMMENT = "REMOVE_COMMENT"
+  REMOVE_COMMENT = "REMOVE_COMMENT",
+  FETCH_COMMENTS = "FETCH_COMMENTS"
 }
 
-export interface IncrementAction {
-  type: ActionTypes.INCREMENT_LIKES,
-  index: number
-}
 export interface AddCommentAction {
   type: ActionTypes.ADD_COMMENT,
   postId: string,
@@ -22,16 +16,22 @@ export interface RemoveCommentAction{
   index: number
 }
 
-export type ActionPayloads = IncrementAction | AddCommentAction | RemoveCommentAction;
+export interface FetchCommentsAction{
+  type: ActionTypes.FETCH_COMMENTS,
+  postId: string
+}
+
+export type ActionPayloads = FetchCommentsAction | AddCommentAction | RemoveCommentAction;
 //actions are just Objects
 export const actionCreators = {
-  increment: (index: number) : IncrementAction=> {
+
+  fetchCommentsForPost: (postId: string) : FetchCommentsAction => {
     return {
-      type: ActionTypes.INCREMENT_LIKES,
-      index: index
+      type: ActionTypes.FETCH_COMMENTS,
+      postId: postId,
     }
   },
-  
+
   //add comment
   addComment: (postId: string, author: string, comment: string ) : AddCommentAction => {
     console.log("dispatching add comment")
@@ -50,5 +50,5 @@ export const actionCreators = {
       postId,
       index
     }
-  }
+  },
 }
