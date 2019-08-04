@@ -16,11 +16,11 @@ import {
 
 const router = (
 	<Provider store={store}>
-		<BrowserRouter>
-    <Switch>
-      <Route path="/" component={App}/>
-      </Switch>
-		</BrowserRouter>
+	  <BrowserRouter>
+          <Switch>
+            <Route path="/" component={App}/>
+          </Switch>
+	  </BrowserRouter>
 	</Provider>
 )
 
