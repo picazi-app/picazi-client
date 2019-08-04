@@ -43,7 +43,6 @@ class PhotoGridContainer extends React.Component<PhotoGridProps> {
 }
 
 function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) : PostListScreenProps{
-  console.log(getPostListStateProps(state))
   return {
     posts: getPostListStateProps(state).posts
   }

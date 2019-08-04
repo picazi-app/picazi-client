@@ -6,11 +6,12 @@ import { Post } from '../../Post/store/types';
 import { Comment } from '../store/types'
 import { actionCreators } from '../store/actions';
 import { AddCommentAction, RemoveCommentAction } from '../store/actions';
-import { connect  }from 'react-redux';
+import { connect  } from 'react-redux';
 import { StateProps } from '../../../store/types';
 import { PostInfoScreenProps } from "../store/types";
 import { getPostInfoStateProps } from "../store/selectors";
 import { getPhoto } from '../store/actions'
+import { fetchComments } from '../store/actions';
 
 interface MatchParams {
   postId: string
@@ -23,13 +24,17 @@ interface PostInfoActionProps {
   addComment: (postId: string, author: string, comment: string) => AddCommentAction;
   removeComment: (postId: string, i: number) => RemoveCommentAction;
   getPhoto: (postId: any) => void;
+  fetchComments: (postId: string) => void;
 }
 type Props = OwnProps & PostInfoProps & PostInfoActionProps;
 
 class PostInfoContainer extends React.Component<Props>{
   componentDidMount() {
+    const { postId } = this.props.match.params
     //call action to get photo info
-    this.props.getPhoto(this.props.match.params.postId);
+    this.props.getPhoto(postId);
+    // call action to fetch comments
+    this.props.fetchComments(postId);
   }
 	render(){
     const { postInfo } = this.props;
@@ -54,7 +59,8 @@ function mapStateToProps(state: StateProps, { location }: RouteComponentProps ) 
 const PostInfo = withRouter(connect(mapStateToProps, {
   addComment: actionCreators.addComment,
   removeComment: actionCreators.removeComment,
-  getPhoto: getPhoto
+  getPhoto: getPhoto,
+  fetchComments: fetchComments
 
 })(PostInfoContainer));
 

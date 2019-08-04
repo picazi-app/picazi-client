@@ -102,11 +102,10 @@ function error(actionType : any, data: any) {
     data: data
   }
 }
-export function getPostInfoComment() {
+export function fetchComments(postId: string) {
   return (dispatch: any) => {
-    return axios.get(`${apiUrl}/:postId/comments`)
+    return axios.get(`${apiUrl}/${postId}/comments`)
       .then(response => {
-        console.log(response);
         dispatch(success(ActionTypes.FETCH_COMMENTS, response.data.comments))
       })
       .catch(error => {
@@ -118,12 +117,10 @@ export function getPostInfoComment() {
 }
 
 // Call an api to get photo details.
-export function getPhoto(postId: any) {
+export function getPhoto(postId: string) {
   return (dispatch: any) => {
-    console.log("postId", postId)
     return axios.get(`${apiUrl}/${postId}`)
       .then(response => {
-        console.log(response);
         dispatch(success(ActionTypes.GET_PHOTO, response.data.post))
       })
       .catch((error)=> {

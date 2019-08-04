@@ -1,5 +1,6 @@
 import {  ActionPayloads } from './actions';
 import { PostInfoScreenProps} from './types';
+import { stat } from 'fs';
 
 export const defaultPostInfoScreenProps: PostInfoScreenProps = {
   postInfo: {
@@ -17,10 +18,12 @@ export const defaultPostInfoScreenProps: PostInfoScreenProps = {
 export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenProps, action: ActionPayloads | any) : PostInfoScreenProps {
 	switch(action.type) {
     case 'FETCH_COMMENTS': 
-      console.log("inside FETCH_COMMENTS", state);
-      break;
       return {
-        ...state
+        ...state,
+        postInfo: {
+          post: state.postInfo.post,
+          comments: action.data.comments
+        }  
       }
     case 'ADD_COMMENT':
       //return the new state with new comment
@@ -51,7 +54,6 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
       };
     case 'VIEW_PHOTO':
       const post = state.postInfo.post;
-      console.log(action.post)
       return {
         ...state,
         postInfo: {
@@ -66,7 +68,6 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
         }
       }
     case 'GET_PHOTO':
-      console.log(action.data)
       return {
         ...state,
         postInfo: {

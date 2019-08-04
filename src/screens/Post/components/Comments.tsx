@@ -2,7 +2,8 @@ import React from 'react';
 import { Comment } from '../store/types';
 import { AddCommentAction, RemoveCommentAction } from '../store/actions';
 import {  RouteComponentProps } from 'react-router-dom';
-
+// import { fetchComments } from '../store/actions';
+import { connect  } from 'react-redux';
 
 
 interface MatchParams {
@@ -11,24 +12,18 @@ interface MatchParams {
 type OwnProps = RouteComponentProps<MatchParams>;
 interface CommentsProps{
   postComments: Comment[];
-  // params: ParamProps;
   addComment: (postId: string, author: string, comment: string) => AddCommentAction;
-  removeComment: (postId: string, i: number) => RemoveCommentAction
-
+  removeComment: (postId: string, i: number) => RemoveCommentAction;
 }
 type Props = OwnProps & CommentsProps
 
 
 class Comments extends React.Component<Props> {
-  commentForm = React.createRef<HTMLFormElement>();
-  author = React.createRef<HTMLInputElement>();
-  comment = React.createRef<HTMLInputElement>();
 
 	constructor(props:any){
 		super(props)
     this.renderComment=this.renderComment.bind(this)
   }
-  
 	renderComment(comment: Comment, index: number) {
 		return (
 			<div className="comment" key={index}>
@@ -51,6 +46,7 @@ class Comments extends React.Component<Props> {
 		(this.refs.commentForm as HTMLFormElement).reset();
 	}
 	render() {
+    console.log(this.props)
 		return(
 			<div className="comments">
 				{ this.props.postComments.map(this.renderComment)}
