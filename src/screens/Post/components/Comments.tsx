@@ -1,6 +1,6 @@
 import React from 'react';
-import { Comment, UserComments } from '../store/types/comments';
-import { AddCommentAction, RemoveCommentAction } from '../actions/actionCreators';
+import { Comment } from '../store/types';
+import { AddCommentAction, RemoveCommentAction } from '../store/actions';
 import {  RouteComponentProps } from 'react-router-dom';
 
 
@@ -51,8 +51,6 @@ class Comments extends React.Component<Props> {
 		(this.refs.commentForm as HTMLFormElement).reset();
 	}
 	render() {
-    console.log("this.props inside comments ", this.props)
-    const { params } = this.props.match;
 		return(
 			<div className="comments">
 				{ this.props.postComments.map(this.renderComment)}
