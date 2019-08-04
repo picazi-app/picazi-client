@@ -24,26 +24,26 @@ export enum UserActionTypes {
   LOGOUT= "LOGOUT"
 }
 export interface RegSuccessReturnType {
-  type: UserActionTypes.REGISTER_SUCCESS,
-  msg: string
+  type: UserActionTypes.REGISTER_SUCCESS;
+  msg: string;
 }
 
 export interface RegFailureReturnType {
-  type: UserActionTypes.REGISTER_FAILURE,
-  msg: string
+  type: UserActionTypes.REGISTER_FAILURE;
+  msg: string;
 }
 
 export interface RegRequestReturnType {
-  type: UserActionTypes.REGISTER_REQUEST,
-  msg: string
+  type: UserActionTypes.REGISTER_REQUEST;
+  msg: string;
 }
 
 export type UserActions = RegSuccessReturnType | RegFailureReturnType | RegRequestReturnType;
 export interface User {
-  firstName: string,
-  username: string,
-  email: string,
-  password: string
+  firstName: string;
+  username: string;
+  email: string;
+  password: string;
 }
 
 export function register(user: User) {

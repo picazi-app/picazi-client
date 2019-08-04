@@ -2,18 +2,31 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 import { Post } from '../screens/Post/store/types';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { StateProps } from '../store/types';
+import { getPostListStateProps } from "../screens/PostList/store/selectors";
 
 interface PhotoProps {
   post: Post;
+  onPhotoClick?: (post: Post) => void;
 }
 
 class Photo extends React.Component<PhotoProps> {
+  handleClick = () => {
+    const { post, onPhotoClick } = this.props;
+    if (onPhotoClick) {
+      onPhotoClick(post)
+    }
+  }
+
 	render(){
     const { post } = this.props;
+
 		return(
 			<figure className="grid-figure">
 				<div className="grid-photo-wrap">
-					<Link to={`/view/${post.code}`}>
+					<Link to={`/view/${post.code}`} onClick={this.handleClick}>
 						<img src={post.display_src} alt={post.caption} className="grid-photo"/>
 					</Link>
 					<CSSTransitionGroup transitionName="like"
@@ -41,4 +54,11 @@ class Photo extends React.Component<PhotoProps> {
 	}
 }
 
+// function mapStateToProps(state: StateProps, { location}: RouteComponentProps ){
+//   console.log(getPostListStateProps(state))
+//   return {
+//     posts: getPostListStateProps(state).posts
+//   }
+// }
+// const Photo = (connect(mapStateToProps, null)(ViewPhoto))
 export default Photo;

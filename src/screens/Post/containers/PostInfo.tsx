@@ -4,46 +4,58 @@ import Photo from '../../../components/Photo';
 import Comments from '../components/Comments';
 import { Post } from '../../Post/store/types';
 import { Comment } from '../store/types'
+import { actionCreators } from '../store/actions';
 import { AddCommentAction, RemoveCommentAction } from '../store/actions';
 import { connect  }from 'react-redux';
-import { actionCreators } from '../store/actions'
-import { bindActionCreators, Dispatch} from 'redux';
+import { StateProps } from '../../../store/types';
+import { PostInfoScreenProps } from "../store/types";
+import { getPostInfoStateProps } from "../store/selectors";
+import { getPhoto } from '../store/actions'
 
 interface MatchParams {
   postId: string
 }
 type OwnProps = RouteComponentProps<MatchParams>;
-interface PostInfoProps {
-  post: Post;
-  comments: Comment[];
+
+type PostInfoProps = PostInfoScreenProps;
+
+interface PostInfoActionProps {
   addComment: (postId: string, author: string, comment: string) => AddCommentAction;
   removeComment: (postId: string, i: number) => RemoveCommentAction;
+  getPhoto: (postId: any) => void;
 }
-type Props = OwnProps & PostInfoProps
+type Props = OwnProps & PostInfoProps & PostInfoActionProps;
 
-class PostInfo extends React.Component<Props>{
+class PostInfoContainer extends React.Component<Props>{
+  componentDidMount() {
+    //call action to get photo info
+    this.props.getPhoto(this.props.match.params.postId);
+  }
 	render(){
-    const { post } = this.props;
+    const { postInfo } = this.props;
 		//get us the post
-		const postComments = this.props.comments || [];
+		const postComments = postInfo.comments || [];
     
 		return(
 			<div className="single-photo">
-				<Photo post={post}/>
+				<Photo post={postInfo.post}/>
 				<Comments postComments={postComments} {...this.props}/>
 			</div>
 		)
 	}
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: StateProps, { location }: RouteComponentProps ) : PostInfoScreenProps{
   return {
-    postInfo_screen: state.postInfo_screen
+    ...getPostInfoStateProps(state)
   }
 }
- 
-function mapDispatchToProps(dispatch: Dispatch) {
-  return bindActionCreators(actionCreators, dispatch)
-}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostInfo));
+const PostInfo = withRouter(connect(mapStateToProps, {
+  addComment: actionCreators.addComment,
+  removeComment: actionCreators.removeComment,
+  getPhoto: getPhoto
+
+})(PostInfoContainer));
+
+export default PostInfo;

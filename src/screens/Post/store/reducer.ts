@@ -7,7 +7,6 @@ export const defaultPostInfoScreenProps: PostInfoScreenProps = {
       code: "",
       caption: "",
       likes: 0,
-      id: "",
       display_src: "",
       totalComments: 0,
     },
@@ -20,6 +19,9 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
     case 'FETCH_COMMENTS': 
       console.log("inside FETCH_COMMENTS", state);
       break;
+      return {
+        ...state
+      }
     case 'ADD_COMMENT':
       //return the new state with new comment
       const commentsToAddTo = state.postInfo.comments;
@@ -47,9 +49,38 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
           ]
         } 
       };
-      
+    case 'VIEW_PHOTO':
+      const post = state.postInfo.post;
+      console.log(action.post)
+      return {
+        ...state,
+        postInfo: {
+          post: {
+            code: action.post.code,
+            caption: action.post.caption,
+            likes: action.post.likes,
+            display_src: action.post.display_src,
+            totalComments: action.post.totalComments
+          },
+          comments: state.postInfo.comments
+        }
+      }
+    case 'GET_PHOTO':
+      console.log(action.data)
+      return {
+        ...state,
+        postInfo: {
+          post: {
+            code: action.data.code,
+            caption: action.data.caption,
+            likes: action.data.likes,
+            display_src: action.data.display_src,
+            totalComments: action.data.totalComments
+          },
+        comments: state.postInfo.comments
+        }
+    }
     default:
-      return state;
-	}
-	return state;
+    return state;
+  }
 }

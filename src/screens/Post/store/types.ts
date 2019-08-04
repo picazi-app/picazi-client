@@ -2,7 +2,6 @@ export interface Post {
   code: string;
   caption: string;
   likes: number;
-  id: string;
   display_src: string;
   totalComments: number;
 }

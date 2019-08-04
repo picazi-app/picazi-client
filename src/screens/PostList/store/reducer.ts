@@ -7,14 +7,14 @@
 //2. copy about current State
 import { AnyAction } from "redux";
 
-import { IncrementAction } from './action';
+import { ActionTypes } from './action';
 import { PostListScreenProps } from './types';
 
 export const defaultPostListScreenProps: PostListScreenProps = {
   posts: []
 }
 
-export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: IncrementAction | AnyAction) : PostListScreenProps {
+export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction) : PostListScreenProps {
 	switch(action.type) {
 		case 'INCREMENT_LIKES' :
 			console.log("INCREMENTING Likes!!")
@@ -27,10 +27,35 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
           ...state.posts.slice(i+1), // after the one we are updating
         ]
       }
-	 		default:
-	 			return state;
+    case ActionTypes.GET_POSTLIST:
+    return {
+      ...state,
+      posts: action.data
+    }			
+    default:
+      return state;
 	}
 	
 	//state[action.index].likes++; we're mutating the state
 	
 }
+
+// export const initialState = {
+//   status: '',
+//   posts: []
+// }
+
+// export function getAllPostList(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction): PostListScreenProps {
+// 	switch(action.type) {
+// 		case ActionTypes.GET_POSTLIST:
+//       return {
+//         ...state,
+//         posts: action.data
+//       }			
+// 	 		default:
+// 	 			return state;
+// 	}
+	
+// 	//state[action.index].likes++; we're mutating the state
+	
+// }
