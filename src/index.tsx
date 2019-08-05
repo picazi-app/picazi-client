@@ -1,7 +1,6 @@
 import React from 'react';
 import  { render } from 'react-dom';
 import './static/css/index.css';
-
 //import components
 import App from './App';
 

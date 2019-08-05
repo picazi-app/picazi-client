@@ -6,16 +6,11 @@ export const history = createBrowserHistory();
 // URL
 const apiUrl = `${getBaseUrl()}/users`;
 
-export interface CheckEmailExist {
-  type: UserActionTypes.EMAIL_EXIST,
-  email: string
-}
-
 export enum UserActionTypes {
   REGISTER_REQUEST = "REGISTER_REQUEST",
   REGISTER_SUCCESS = "REGISTER_SUCCESS",
   REGISTER_FAILURE = "REGISTER_FAILURE",
-  EMAIL_EXIST = "EMAIL_EXIST",
+  CHECK_EMAIL_EXIST = "CHECK_EMAIL_EXIST",
 
   LOGIN_REQUEST = "LOGIN_REQUEST",
   LOGIN_SUCCESS = "LOGIN_SUCCESS",
@@ -38,6 +33,11 @@ export interface RegRequestReturnType {
   msg: string;
 }
 
+export interface CheckEmailExist {
+  type: UserActionTypes.CHECK_EMAIL_EXIST,
+  emailExists: boolean
+}
+
 export type UserActions = RegSuccessReturnType | RegFailureReturnType | RegRequestReturnType;
 export interface User {
   firstName: string;
@@ -46,39 +46,39 @@ export interface User {
   password: string;
 }
 
+export const success = (actionType: any, msg: string) => {
+  return {
+    type: actionType,
+    success: msg
+  }
+}
+
+export const error = (actionType: any, msg: string) => {
+  return {
+    type: actionType,
+    error: msg
+  }
+}
+
 export function register(user: User) {
   return (dispatch: any) => {
     return axios.post(`${apiUrl}/email/register`, {...user})
       .then(response => {
         console.log(response);
-        dispatch(success(response.data.msg))
+        dispatch(success(UserActionTypes.REGISTER_SUCCESS, response.data.msg))
       })
       .catch(error => {
         console.log(error);
-        dispatch(error("Error"))
+        dispatch(error(UserActionTypes.REGISTER_FAILURE, error))
         throw(error);
       });
   };
 }
 
-export const success = (msg: string): RegSuccessReturnType =>{
+export const checkEmailExist =  (actionType: any, emailExists: boolean) : CheckEmailExist => {
   return {
-    type: UserActionTypes.REGISTER_SUCCESS,
-    msg: msg
-  }
-}
-
-export const error = (msg: string): RegFailureReturnType =>{
-  return {
-    type: UserActionTypes.REGISTER_FAILURE,
-    msg: msg
-  }
-}
-
-export const checkEmailExist =  (email: string) : CheckEmailExist => {
-  return {
-    type: UserActionTypes.EMAIL_EXIST,
-    email: email
+    type: actionType,
+    emailExists: emailExists
   }
 }
 
@@ -86,7 +86,7 @@ export const doesEmailExist =  (email: string) => {
     return (dispatch: any) => {
       return axios.post(`${apiUrl}/email/check`, {email})
         .then(response => {
-          dispatch(checkEmailExist(response.data))
+          dispatch(checkEmailExist(UserActionTypes.CHECK_EMAIL_EXIST, response.data.emailExists))
         })
         .catch(error => {
           throw(error);

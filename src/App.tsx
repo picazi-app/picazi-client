@@ -7,13 +7,15 @@ import {
   Switch,
   Link,
   RouteComponentProps,
+  Router
 } from "react-router-dom";
 
 import { PostList } from "./screens/PostList/store/types";
 import { Comment, Post } from './screens/Post/store/types';
 import { AddCommentAction, RemoveCommentAction } from './screens/Post/store/actions';
 import LoginPage from './screens/Login/components/LoginPage'
-import RegisterPage from './screens/Register/components/RegisterPage';
+import RegisterPage from './screens/Register/containers/RegisterPage';
+
 interface MatchParams {
   postId: string
 }
@@ -41,12 +43,12 @@ class App extends React.Component<Props> {
 					<Link to="/">Reduxstagram</Link>
 				</h1>
         <Switch>
-          <Route path="/login" component={LoginPage} />
-          <Route path="/signup" component={RegisterPage} />
-          <Route path="/view/:postId" component={() => (<PostInfo  {...this.props}/>)}/>
-          <Route component={() =>(
-            <PhotoGrid {...this.props}/>
-          )}/>
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={RegisterPage} />
+            <Route path="/view/:postId" component={() => (<PostInfo  {...this.props}/>)}/>
+            <Route component={() =>(
+              <PhotoGrid {...this.props}/>
+            )}/>
         </Switch>
 			</div>
 		)
