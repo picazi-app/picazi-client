@@ -13,12 +13,12 @@ import {
   validateForm,
   validateEmail,
 } from '../../../helpers/formValidations';
-import { UserFieldInfo, FormErrors, RegistrationFormProps } from "../store/types"; 
+import { UserFieldInfo, FormErrors } from "../store/types"; 
 import { StateProps } from '../../../store/types';
 //import selectors
 import { getRegistrationStateProps } from '../store/selectors';
 import { getSessionStateProps } from '../../../store/selector'
-
+import RegistrationForm from '../components/RegistrationForm'
 
 interface StateType {
   formErrors: FormErrors;
@@ -77,7 +77,7 @@ class RegisterPage extends React.Component<Props, StateType> {
         });
     }
 
-    handleFirstName = (event: any) => {
+    handleFirstName = () => {
       //get firstName from the state;
       const { firstName } = this.state.user;
       //get errors object from the state;
@@ -96,12 +96,6 @@ class RegisterPage extends React.Component<Props, StateType> {
         this.setState({
           formErrors: formErrors,
         })
-        // this.setState({
-        //   formErrors: {
-        //     ...formErrors,
-        //     firstName: ''
-        //   }
-        // })
       } 
     }
 
@@ -122,12 +116,6 @@ class RegisterPage extends React.Component<Props, StateType> {
         this.setState({
           formErrors: formErrors
         })
-        // this.setState({
-        //   formErrors: {
-        //     ...formErrors,
-        //     password: ''
-        //   }
-        // })
       } 
     }
     handleComparePassword = () => {
@@ -205,7 +193,6 @@ class RegisterPage extends React.Component<Props, StateType> {
       else if( emailExists === true && errors) {
         console.log("errors inside second if", errors)
         this.setState({
-          // formErrors: errors,
           formErrors: {
             ...errors,
             email: "This email is already registered with another account."
@@ -215,7 +202,6 @@ class RegisterPage extends React.Component<Props, StateType> {
       else if(errors) {
         console.log(errors)
         this.setState({
-          // formErrors: errors,
           formErrors: {
             ...errors,
           }
@@ -240,75 +226,17 @@ class RegisterPage extends React.Component<Props, StateType> {
       const { user, formErrors } = this.state;
         return (
           (this.props.isLoggedIn === true) ? <Redirect to='/' /> : 
-            <div>
-                <h2 style={{textAlign: "center"}}>New User? Register here!</h2>
-                <div className="center-form">
-                  <div className="form-group">
-                    <label htmlFor="firstName">First Name</label>
-                    <input  
-                        className="form-control" 
-                        type="text" 
-                        name="firstName" 
-                        value={user.firstName} 
-                        onBlur={this.handleFirstName}
-                        onChange={this.handleChange}>
-                    </input>
-                    <div> {formErrors ? formErrors.firstName : null} </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input  
-                        className="form-control"
-                        type="text" 
-                        name="username" 
-                        value={user.username} 
-                        onBlur={this.handleUsername}
-                        onChange={this.handleChange}>
-                    </input>
-                    <div> {formErrors ? formErrors.username : null} </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input  
-                        className="form-control" 
-                        type="email" 
-                        name="email" 
-                        value={user.email} 
-                        onBlur={this.handleEmail}
-                        onChange={this.handleChange}>
-                    </input>
-                    <div> {formErrors ? formErrors.email : null} </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input  
-                        className="form-control"
-                        type="password" 
-                        name="password" 
-                        value={user.password} 
-                        onBlur={this.handlePassword}
-                        onChange={this.handleChange}>
-                    </input>
-                    <div> {formErrors ? formErrors.password : null} </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="confirmPass">Confirm password</label>
-                    <input  
-                        className="form-control"
-                        type="password" 
-                        name="confirmPass" 
-                        value={user.confirmPass}
-                        onBlur={this.handlePassword} 
-                        onChange={this.handleChange}>
-                    </input>
-                    <div> {formErrors ? formErrors.confirmPassword : null} </div>
-                  </div>
-                  <div className="form-group">
-                      <button className="btn btn-primary"  onClick={this.handleSubmit}>Register</button>
-                      <Link to="/login" className="btn btn-link">Login</Link> 
-                  </div>
-                </div>
-            </div>
+          <RegistrationForm 
+              user={user} 
+              formErrors={formErrors}
+              handleSubmit={this.handleSubmit}
+              handleChange={this.handleChange}
+              handleFirstName={this.handleFirstName}
+              handleUsername={this.handleUsername}
+              handlePassword={this.handlePassword}
+              handleComparePassword={this.handleComparePassword}
+              handleEmail={this.handleEmail}
+              />
         );
     }
 }
