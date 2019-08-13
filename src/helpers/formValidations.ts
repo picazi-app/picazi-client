@@ -1,4 +1,4 @@
-import { UserFieldInfo, FormErrors } from '../store/types';
+import { UserFieldInfo, FormErrors } from '../screens/Register/store/types';
 const VALIDATORS = {
   name: {
     MIN: 2,
@@ -76,6 +76,7 @@ export function comparePasswords(passwordA: string, passwordB: string) : string 
 
 export function validateForm(userInfo: UserFieldInfo) : FormErrors {
   const firstNameError = validateName(userInfo.firstName);
+  const usernameError = validateUsername(userInfo.username);
   const emailError = validateEmail(userInfo.email);
   const passwordError = validatePassword(userInfo.password);
   const comparePasswordsError = comparePasswords(userInfo.password, userInfo.confirmPass);
@@ -94,6 +95,10 @@ export function validateForm(userInfo: UserFieldInfo) : FormErrors {
 
   if(comparePasswordsError) {
     formErrors.confirmPassword = comparePasswordsError;
+  }
+
+  if(usernameError) {
+    formErrors.username = usernameError;
   }
 
   return formErrors;

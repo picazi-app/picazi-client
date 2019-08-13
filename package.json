@@ -28,6 +28,7 @@
     "react-router-redux": "next",
     "react-scripts": "3.0.1",
     "redux": "^4.0.4",
+    "redux-saga": "^1.0.5",
     "redux-thunk": "^2.3.0",
     "styl": "^0.2.9",
     "style-loader": "^0.23.1",

@@ -15,7 +15,6 @@ export interface FormErrors {
 }
 
 export interface RegistrationFormProps {
-  user: UserFieldInfo;
   formErrors: FormErrors;
   status: RegistrationFormStatus;
   isNewUser: boolean;

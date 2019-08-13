@@ -1,8 +1,6 @@
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
-import { createBrowserHistory } from 'history';
-
-export const history = createBrowserHistory();
+import { history } from '../../../helpers/history'
 // URL
 const apiUrl = `${getBaseUrl()}/users`;
 
@@ -56,7 +54,7 @@ export const success = (actionType: any, msg: string) => {
 export const error = (actionType: any, msg: string) => {
   return {
     type: actionType,
-    error: msg
+    failure: msg
   }
 }
 
@@ -65,11 +63,14 @@ export function register(user: User) {
     return axios.post(`${apiUrl}/email/register`, {...user})
       .then(response => {
         console.log(response);
-        dispatch(success(UserActionTypes.REGISTER_SUCCESS, response.data.msg))
+        dispatch(success(UserActionTypes.REGISTER_SUCCESS, response.data.msg));
+        if(response.status === 200) {
+          history.push('/login')
+        }
       })
-      .catch(error => {
+      .catch(err => {
         console.log(error);
-        dispatch(error(UserActionTypes.REGISTER_FAILURE, error))
+        dispatch(error(UserActionTypes.REGISTER_FAILURE, err.response.data))
         throw(error);
       });
   };

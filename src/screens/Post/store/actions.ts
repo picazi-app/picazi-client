@@ -108,10 +108,11 @@ export function fetchComments(postId: string) {
       .then(response => {
         dispatch(success(ActionTypes.FETCH_COMMENTS, response.data.comments))
       })
-      .catch(error => {
-        console.log(error);
-        dispatch(error(ActionTypes.FETCH_COMMENTS_FAILURE, error))
-        throw(error);
+      .catch(err=> {
+        console.log(err.response);
+        if(err.response) {
+          dispatch(error(ActionTypes.FETCH_COMMENTS_FAILURE, err.response))
+        }
       });
   };
 }

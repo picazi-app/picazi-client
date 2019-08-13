@@ -11,7 +11,7 @@ import { ActionTypes } from './action';
 import { PostListScreenProps } from './types';
 
 export const defaultPostListScreenProps: PostListScreenProps = {
-  posts: []
+  posts: [],
 }
 
 export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction) : PostListScreenProps {
@@ -21,6 +21,7 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
       const i = action.index;
       
       return {
+        ...state,
         posts: [
           ...state.posts.slice(0, i), //before the one we are updating
           {...state.posts[i], likes: state.posts[i].likes + 1},
@@ -30,7 +31,13 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
     case ActionTypes.GET_POSTLIST:
     return {
       ...state,
-      posts: action.data
+      posts: action.data,
+
+    }		
+    case ActionTypes.POSTLIST_FAILURE:
+    return {
+      ...state,
+      posts: [],
     }			
     default:
       return state;

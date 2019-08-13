@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../../../App.css';
 // import {isEmailAvailable} from '../../../helpers/api';
@@ -12,22 +12,35 @@ import {
   comparePasswords,
   validateForm,
   validateEmail,
-} from '../helpers/formValidations';
+} from '../../../helpers/formValidations';
 import { UserFieldInfo, FormErrors, RegistrationFormProps } from "../store/types"; 
 import { StateProps } from '../../../store/types';
 //import selectors
-import { getRegistrationStateProps } from '../store/selectors'
-import { async } from 'q';
+import { getRegistrationStateProps } from '../store/selectors';
+import { getSessionStateProps } from '../../../store/selector'
 
-type StateType = RegistrationFormProps;
 
-interface Props {
-  register: (user: User) => any;
+interface StateType {
   formErrors: FormErrors;
-  success: string;
-  doesEmailExist: (email: string) => void,
-  emailExists: boolean
+  user: UserFieldInfo;
 }
+
+interface ActionProps {
+  register: (user: User) => any;
+  doesEmailExist: (email: string) => void;
+}
+
+interface DataProps {
+  formErrors: FormErrors;
+  status: {
+    success?: string,
+    failure?: string,  
+  }
+  emailExists: boolean;
+  isLoggedIn: boolean;
+}
+
+type Props = DataProps & ActionProps;
 
 class RegisterPage extends React.Component<Props, StateType> {
     constructor(props: Props) {
@@ -41,16 +54,16 @@ class RegisterPage extends React.Component<Props, StateType> {
             confirmPass: '',
             email: '',
           },
-          // formErrors: props.formErrors,
           formErrors: {},
-          isNewUser: true,
-          submitted: false,
-          emailExists: false,
-          status:{
-            success: props.success,
-            failure: ''
-          }
         };
+    }
+    componentDidUpdate(previousProps: Props) {
+      const { formErrors } = this.props;
+      if(previousProps.formErrors !== formErrors) {
+        this.setState({
+          formErrors: formErrors
+        });
+      }
     }
 
     handleChange = (event: any) => {
@@ -69,10 +82,8 @@ class RegisterPage extends React.Component<Props, StateType> {
       const { firstName } = this.state.user;
       //get errors object from the state;
       const { formErrors } = this.state;
-      console.log(formErrors)
       //Run validations to see if firstName has atleast 2 chars.
       const nameError = validateName(firstName);
-      console.log(nameError)
       if (nameError) {
         this.setState({
           formErrors: {
@@ -150,7 +161,8 @@ class RegisterPage extends React.Component<Props, StateType> {
             username: usernameError
           }
         });
-      } else {
+      }
+       else {
         delete formErrors.username;
         this.setState({
           formErrors: formErrors
@@ -159,7 +171,6 @@ class RegisterPage extends React.Component<Props, StateType> {
     }
 
     handleEmail = async() => {
-      // const email = event.target.value;
       const { formErrors } = this.state;
       const { email } = this.state.user;
 
@@ -172,32 +183,16 @@ class RegisterPage extends React.Component<Props, StateType> {
           }
         });
       } else{
-            await this.props.doesEmailExist(email);
-            console.log("this.props.emailExists", this.props.emailExists)
-            if(this.props.emailExists) {
-              this.setState({
-                formErrors: {
-                  ...formErrors,
-                  email: "This email is already taken. Please enter another email"
-                }
-              });
-            }
-            else{
-              delete formErrors.email;
-              this.setState({
-                formErrors: formErrors
-              });
-            }
+        this.props.doesEmailExist(email);
       }
     }
 
-    handleSubmit = (event: any)  => {
+    handleSubmit = ()  => {
 
-      const { user, isNewUser } = this.state;
+      const { user } = this.state;
       const { emailExists } = this.props;
-      console.log("val....................", this.props.emailExists)
       const errors = validateForm(user);
-      
+      console.log(errors)
       if((Object.entries(errors).length === 0 && errors.constructor === Object) && emailExists === false) {
         this.props.register({
           firstName: user.firstName,
@@ -205,16 +200,25 @@ class RegisterPage extends React.Component<Props, StateType> {
           password: user.password,
           email: user.email
         });
-        this.setState({
-          submitted: true,
-        }, () => this.clear())
+        this.clear();
       }
-      else {
+      else if( emailExists === true && errors) {
+        console.log("errors inside second if", errors)
         this.setState({
           // formErrors: errors,
           formErrors: {
             ...errors,
-            email: "This email is already registered with another account."}
+            email: "This email is already registered with another account."
+          }
+        });
+      }
+      else if(errors) {
+        console.log(errors)
+        this.setState({
+          // formErrors: errors,
+          formErrors: {
+            ...errors,
+          }
         });
       }
     }
@@ -234,19 +238,11 @@ class RegisterPage extends React.Component<Props, StateType> {
 
   render() {
       const { user, formErrors } = this.state;
-      console.log("this.state.formErrors", this.state.formErrors)
         return (
+          (this.props.isLoggedIn === true) ? <Redirect to='/' /> : 
             <div>
                 <h2 style={{textAlign: "center"}}>New User? Register here!</h2>
                 <div className="center-form">
-                  <h3 style={{color: "green"}}> 
-                  {
-                    this.props.success 
-                    ? 
-                    "Registration is successful."
-                    : null 
-                  }
-                  </h3>
                   <div className="form-group">
                     <label htmlFor="firstName">First Name</label>
                     <input  
@@ -309,7 +305,7 @@ class RegisterPage extends React.Component<Props, StateType> {
                   </div>
                   <div className="form-group">
                       <button className="btn btn-primary"  onClick={this.handleSubmit}>Register</button>
-                      <Link to="/login" className="btn btn-link">Cancel</Link> 
+                      <Link to="/login" className="btn btn-link">Login</Link> 
                   </div>
                 </div>
             </div>
@@ -317,11 +313,11 @@ class RegisterPage extends React.Component<Props, StateType> {
     }
 }
 function mapStateToProps(state: StateProps){
-  console.log(getRegistrationStateProps(state))
-  // console.log({...state})
    return {
-    success: getRegistrationStateProps(state).status.success,
-    emailExists: getRegistrationStateProps(state).emailExists
+    status: getRegistrationStateProps(state).status,
+    emailExists: getRegistrationStateProps(state).emailExists,
+    formErrors: getRegistrationStateProps(state).formErrors,
+    isLoggedIn: getSessionStateProps(state).isLoggedIn,
   }
 }
 export default connect(mapStateToProps, {

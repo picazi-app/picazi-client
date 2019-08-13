@@ -43,18 +43,16 @@ interface PostListResponseDataType {
   totalComments: number;
 }
 
-function success(actionType: ActionTypes.GET_POSTLIST, data: PostListResponseDataType){
+function success(actionType: ActionTypes.GET_POSTLIST, msg: PostListResponseDataType){
   return {
     type: actionType,
-    status: ActionTypes.SUCCESS,
-    data: data
+    data: msg,
   };
 }
-function error(actionType: ActionTypes.POSTLIST_FAILURE, error: any) {
+function error(actionType: ActionTypes.POSTLIST_FAILURE, msg: any) {
   return {
     type: actionType,
-    status: ActionTypes.FAILURE,
-    error
+    failure: msg
   };
 }
 // get all the question
@@ -77,14 +75,15 @@ function error(actionType: ActionTypes.POSTLIST_FAILURE, error: any) {
 // };
 export function getPostListData() {
   return (dispatch: any) => {
-    return axios.get(`${apiUrl}/posts`)
+    return axios.get(`${apiUrl}/posts`, {withCredentials: true})
       .then(response => {
         dispatch(success(ActionTypes.GET_POSTLIST, response.data.posts))
       })
-      .catch(error => {
-        console.log(error);
-        dispatch(error(ActionTypes.POSTLIST_FAILURE, error))
-        throw(error);
+      .catch(err => {
+        console.log(err)
+        if(err.response) {
+          dispatch(error(ActionTypes.POSTLIST_FAILURE, err.response))
+        }
       });
   };
 }
