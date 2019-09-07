@@ -27,7 +27,7 @@ export const error = (actionType: any, msg: {}) => {
 
 export function logout() {
   return (dispatch: any) => {
-    return axios.delete(`${apiUrl}/api/session`,{withCredentials: true})
+    return axios.delete(`${apiUrl}/api/session/delete`,{withCredentials: true})
       .then(response => {
         console.log(response);
         dispatch(success(UserActionTypes.REMOVE_USER_SESSION, response.data))
@@ -39,11 +39,9 @@ export function logout() {
 }
 export function saveUserSession() {
   return (dispatch: any) => {
+    dispatch(success(UserActionTypes.FETCH_USER_SESSION, ''));
     return axios.get(`${apiUrl}/api/session`, {withCredentials: true})
-      .then(response => {
-          
-            dispatch(success(UserActionTypes.FETCH_USER_SESSION, ''));
-          
+      .then(response => {          
           if (response.status >= 200 && response.status < 300) {
             if(response.data.isLoggedIn) {
               dispatch(success(UserActionTypes.SET_USER_SESSION, response.data.user));
