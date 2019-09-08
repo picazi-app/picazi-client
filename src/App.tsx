@@ -46,26 +46,25 @@ class App extends React.Component<Props> {
   }
 
 	render(){
-    const { isLoading, isLoggedIn, logout } = this.props;
+    const { isLoading, isLoggedIn, logout, history } = this.props;
+    console.log(isLoading);
+    console.log(history.location);
 		return(
 			<div>
-          {/* <h1>
-            <Link to="/">Reduxstagram</Link>
-
-          </h1>  */}
-          <Header isLoggedIn={isLoggedIn} title="Reduxstagram" logout={logout}/>
-
           {
-            (isLoading === false )?
+            (isLoading  === false )?
+            <>
+            <Header isLoggedIn={isLoggedIn} title="Reduxstagram" logout={logout}/>
             <Switch> 
+              <Route path="/view/:postId" component={PostInfo}/>
               <Route path="/login" component={LoginPage}/>
               <Route path="/signup" component={() => (<RegisterPage {...this.props} />)} />
-              <Route path="/view/:postId" component={() => (<PostInfo />)}/>
               {/* <Route exact path="/" component={() =>(
                 <PhotoGrid {...this.props}/>
               )}/> */}
-              <Route exact={true} path="/" component={ () => <PhotoGrid />} />
+              <Route exact={true} path="/" component={ PhotoGrid} />
             </Switch>
+            </>
 
             : 
             <div>loading...loading...loading...loading...loading...loading... </div>
