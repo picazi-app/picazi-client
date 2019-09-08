@@ -27,31 +27,18 @@ type Props = PhotoGridStateProps & PostGridActionProps;
 
 
 class PhotoGridContainer extends React.Component<Props> {
-
-  componentDidMount() {
+    componentDidMount() {
     if(this.props.isLoggedIn){
       this.props.getPostListData()
     }
   }
-
-  handleClick = (post: Post) => {
-    //call action and send post to reducer and set it.
-    this.props.viewPhoto(post)
-  }
-  
-  // logout = () => {
-  //   // const user = getUserSession()
-  //   // deleteSession()
-  //   this.props.logout()
-  // }
-
 	render(){
     const { posts, isLoggedIn } = this.props;
     console.log("POSTgrid");
     console.log(isLoggedIn);
     const postData = posts ? posts.map((post, i)=> 
       {
-        return <Photo {...this.props} key={i} post={post} onPhotoClick={this.handleClick}/>
+        return <Photo {...this.props} key={i} post={post} />
       }) : null
 
 		return(
