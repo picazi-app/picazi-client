@@ -12,6 +12,7 @@ import { PostInfoScreenProps } from "../store/types";
 import { getPostInfoStateProps } from "../store/selectors";
 import { getPhoto } from '../store/actions'
 import { fetchComments } from '../store/actions';
+import { getSessionStateProps } from '../../../store/selector';
 
 interface MatchParams {
   postId: string
@@ -37,6 +38,7 @@ class PostInfoContainer extends React.Component<Props>{
     this.props.fetchComments(postId);
   }
 	render(){
+    //we're getting the value from the reducer's state which is getPostInfoStateProps()
     const { postInfo } = this.props;
 		//get us the post
 		const postComments = postInfo.comments || [];
@@ -49,10 +51,10 @@ class PostInfoContainer extends React.Component<Props>{
 		)
 	}
 }
-
-function mapStateToProps(state: StateProps, { location }: RouteComponentProps ) : PostInfoScreenProps{
+// PostInfoScreenProps
+function mapStateToProps(state: StateProps, { location }: RouteComponentProps ){
   return {
-    ...getPostInfoStateProps(state)
+    ...getPostInfoStateProps(state),
   }
 }
 
