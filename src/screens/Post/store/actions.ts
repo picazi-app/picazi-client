@@ -124,9 +124,9 @@ export function getPhoto(postId: string) {
       .then(response => {
         dispatch(success(ActionTypes.GET_PHOTO, response.data.post))
       })
-      .catch((error)=> {
+      .catch((err)=> {
         // let err = error.response ? error.response.data.err : error.message;
-        dispatch(error(ActionTypes.GET_PHOTO_FAILURE, error))
+        dispatch(error(ActionTypes.GET_PHOTO_FAILURE, err))
       })
   }
 }
