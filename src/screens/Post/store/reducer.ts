@@ -5,7 +5,7 @@ import { stat } from 'fs';
 export const defaultPostInfoScreenProps: PostInfoScreenProps = {
   postInfo: {
     post: {
-      code: "",
+      _id: "",
       caption: "",
       likes: 0,
       display_src: "",
@@ -58,7 +58,7 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
         ...state,
         postInfo: {
           post: {
-            code: action.post.code,
+            _id: action.post._id,
             caption: action.post.caption,
             likes: action.post.likes,
             display_src: action.post.display_src,
@@ -72,7 +72,7 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
         ...state,
         postInfo: {
           post: {
-            code: action.data.code,
+            _id: action.data._id,
             caption: action.data.caption,
             likes: action.data.likes,
             display_src: action.data.display_src,
