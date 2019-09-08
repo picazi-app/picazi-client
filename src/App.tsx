@@ -1,28 +1,91 @@
 import React from 'react';
-import  { render } from 'react-dom';
-
-// import css
-
-
-//import components
-import App from './components/AppComponent';
-
-import { Provider } from 'react-redux'; // to connect react with redux
-import store from './store/store';
+import PostInfo from './screens/Post/containers/PostInfo';
+import PhotoGrid from './screens/PostList/container/PhotoGrid';
+import { connect } from 'react-redux';
 import {
-  BrowserRouter,
   Route,
+  Switch,
+  Link,
+  RouteComponentProps,
+  Router,
+  Redirect
 } from "react-router-dom";
 
-export const router = (
-	<Provider store={store}>
-		<BrowserRouter>
-      <Route path="/" component={App}/>
-		</BrowserRouter>
-	</Provider>
-)
+import LoginPage from './screens/Login/components/LoginPage'
+import RegisterPage from './screens/Register/containers/RegisterPage';
+import { getSessionStateProps } from "./store/selector";
+import { StateProps } from './store/types';
+// import { fetchUserProfile } from './screens/UserProfile/store/
+import { getUserSession} from './helpers/session';
+import { saveUserSession } from './store/action';
+import { ProtectedRoute, AuthRoute} from './helpers/routes';
+import  Header from './components/Header';
+import { logout } from './store/action'
+interface MatchParams {
+  postId: string
+}
+type OwnProps = RouteComponentProps
 
-// "start": "react-scripts start",
-//     "build": "react-scripts build",
-//     "test": "react-scripts test",
-//     "eject": "react-scripts eject"
+interface AppStateProps {
+  isLoading: boolean;  
+  isLoggedIn: boolean;
+}
+interface ActionProps {
+  saveUserSession: () => void;
+  logout: () => void;
+}
+type Props = OwnProps & ActionProps & AppStateProps;
+
+class App extends React.Component<Props> {
+
+  componentWillMount() {
+    this.props.saveUserSession()
+  }
+  logout = () => {
+    this.props.logout()
+  }
+
+	render(){
+    const { isLoading, isLoggedIn, logout, history } = this.props;
+    console.log(isLoading);
+    console.log(history.location);
+		return(
+			<div>
+          {
+            (isLoading  === false )?
+            <>
+            <Header isLoggedIn={isLoggedIn} title="Reduxstagram" logout={logout}/>
+            <Switch> 
+              <Route path="/view/:postId" component={PostInfo}/>
+              <Route path="/login" component={LoginPage}/>
+              <Route path="/signup" component={() => (<RegisterPage {...this.props} />)} />
+              {/* <Route exact path="/" component={() =>(
+                <PhotoGrid {...this.props}/>
+              )}/> */}
+              <Route exact={true} path="/" component={ PhotoGrid} />
+            </Switch>
+            </>
+
+            : 
+            <div>loading...loading...loading...loading...loading...loading... </div>
+
+          }
+        
+            
+			</div>
+		)
+	}
+}
+
+function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) : AppStateProps {
+  return {
+    isLoading: getSessionStateProps(state).isLoading,
+    isLoggedIn: getSessionStateProps(state).isLoggedIn
+  }
+}
+
+export default connect(mapStateToProps, { 
+  saveUserSession: saveUserSession, 
+  logout: logout
+})(App)
+

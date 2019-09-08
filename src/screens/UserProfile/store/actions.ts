@@ -1,0 +1,6 @@
+
+export enum UserActionTypes {
+  SET_USER_SESSION = "SET_USER_SESSION",
+  REMOVE_USER_SESSION = "REMOVE_USER_SESSION",
+}
+
