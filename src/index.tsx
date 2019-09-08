@@ -14,35 +14,15 @@ import {
   Switch,
 } from "react-router-dom";
 
+const defaultState = configureDefaultState();
+const store = configureStore(defaultState);
+console.log(history.location);
+const router = (
+  <Provider store={store}>
+    <Router history={history}>
+        <Route component={App}/>
+    </Router>
+  </Provider>
+);
 
-// const renderApp = (preloadedState: any) => {
-//   const defaultState = configureDefaultState(preloadedState);
-//   console.log(defaultState)
-//   const store = configureStore(defaultState);
-//   // window.state = store.getState;
-
-//   render(
-//     <Provider store={store}>
-//       <Router history={history}>
-//           <Route path="/" component={App}/>
-//       </Router>
-//     </Provider>,
-//     document.getElementById("root")
-//   );
-// };
-  const defaultState = configureDefaultState();
-  const store = configureStore(defaultState);
-   
-  const router = (
-    <Provider store={store}>
-      <Router history={history}>
-          <Route path="/" component={App}/>
-      </Router>
-    </Provider>
-  );
-
-  render(router, document.getElementById('root'));
-
-// (async () => renderApp(await checkLoggedIn()))();
-
-//(async() => renderApp(await fetchUserSession()))();
+render(router, document.getElementById('root'));
