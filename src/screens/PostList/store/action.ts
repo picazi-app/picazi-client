@@ -1,5 +1,6 @@
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
+import { func } from 'prop-types';
 const apiUrl = `${getBaseUrl()}`;
 
 // Action Types
@@ -15,15 +16,15 @@ export interface IncrementAction {
   index: number
 }
 
-export const actionCreators = {
-  increment:
-   (index: number) : IncrementAction=> {
-    return {
-      type: ActionTypes.INCREMENT_LIKES,
-      index: index
-    }
-  }
-}
+// export const actionCreators = {
+//   increment:
+//    (index: number) : IncrementAction=> {
+//     return {
+//       type: ActionTypes.INCREMENT_LIKES,
+//       index: index
+//     }
+//   }
+// }
 // //action Type
 // export const GET_POSTLIST = 'GET_POSTLIST';
 // export const SUCCESS = 'SUCCESS';
@@ -36,20 +37,25 @@ export const actionCreators = {
 // }
 
 interface PostListResponseDataType {
-  code: string;
   caption: string;
   likes: number;
   display_src: string;
   totalComments: number;
 }
 
-function success(actionType: ActionTypes.GET_POSTLIST, msg: PostListResponseDataType){
-  return {
-    type: actionType,
-    data: msg,
-  };
-}
-function error(actionType: ActionTypes.POSTLIST_FAILURE, msg: any) {
+// function success(actionType: any, msg: PostListResponseDataType){
+//   return {
+//     type: actionType,
+//     data: msg,
+//   };
+// }
+function success(actionType: any, msg: any){
+    return {
+      type: actionType,
+      data: msg,
+    };
+  }
+function error(actionType: any, msg: any) {
   return {
     type: actionType,
     failure: msg
@@ -86,4 +92,17 @@ export function getPostListData() {
         }
       });
   };
+}
+
+export function incrementLikes(postId: string, likes: number) {
+  return (dispatch: any) => {
+    return axios.patch(`${apiUrl}/posts/${postId}/likes`, {postId, likes},  {withCredentials: true})
+      .then((response) => {
+        console.log(response.data)
+        dispatch(success(ActionTypes.INCREMENT_LIKES, response.data.post))
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 }

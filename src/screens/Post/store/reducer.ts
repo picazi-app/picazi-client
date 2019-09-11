@@ -17,6 +17,17 @@ export const defaultPostInfoScreenProps: PostInfoScreenProps = {
 
 export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenProps, action: ActionPayloads | any) : PostInfoScreenProps {
 	switch(action.type) {
+    case 'POSTINFO_INCREMENT_LIKES': 
+      return {
+        ...state,
+        postInfo: {
+          post: {
+            ...state.postInfo.post,          
+            likes: action.data.likes,
+          },
+          comments: state.postInfo.comments
+        }  
+      }
     case 'FETCH_COMMENTS': 
       return {
         ...state,
@@ -81,6 +92,11 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
         comments: state.postInfo.comments
         }
     }
+    // case 'GET_PHOTO_FAILURE':
+    //   return {
+    //     ...state,
+    //     status: action.status
+    //   }
     default:
     return state;
   }

@@ -8,6 +8,8 @@ export enum UserActionTypes {
   REGISTER_REQUEST = "REGISTER_REQUEST",
   REGISTER_SUCCESS = "REGISTER_SUCCESS",
   REGISTER_FAILURE = "REGISTER_FAILURE",
+  EMAIL_EXISTS = "EMAIL_EXISTS",
+  EMAIL_DOES_NOT_EXIST = "EMAIL_DOES_NOT_EXIST",
   CHECK_EMAIL_EXIST = "CHECK_EMAIL_EXIST",
 
   LOGIN_REQUEST = "LOGIN_REQUEST",
@@ -31,10 +33,10 @@ export interface RegRequestReturnType {
   msg: string;
 }
 
-export interface CheckEmailExist {
-  type: UserActionTypes.CHECK_EMAIL_EXIST,
-  emailExists: boolean
-}
+// export interface CheckEmailExist {
+//   type: UserActionTypes.CHECK_EMAIL_EXIST,
+//   emailExists: boolean
+// }
 
 export type UserActions = RegSuccessReturnType | RegFailureReturnType | RegRequestReturnType;
 export interface User {
@@ -47,14 +49,14 @@ export interface User {
 export const success = (actionType: any, msg: string) => {
   return {
     type: actionType,
-    success: msg
+    data: msg
   }
 }
 
 export const error = (actionType: any, msg: string) => {
   return {
     type: actionType,
-    failure: msg
+    data: msg
   }
 }
 
@@ -69,28 +71,29 @@ export function register(user: User) {
         }
       })
       .catch(err => {
-        console.log(error);
         dispatch(error(UserActionTypes.REGISTER_FAILURE, err.response.data))
-        throw(error);
+        throw(err);
       });
   };
 }
 
-export const checkEmailExist =  (actionType: any, emailExists: boolean) : CheckEmailExist => {
-  return {
-    type: actionType,
-    emailExists: emailExists
-  }
-}
+// export const checkEmailExist =  (actionType: any, emailExists: boolean) : CheckEmailExist => {
+//   return {
+//     type: actionType,
+//     emailExists: emailExists
+//   }
+// }
 
 export const doesEmailExist =  (email: string) => {
     return (dispatch: any) => {
       return axios.post(`${apiUrl}/email/check`, {email})
         .then(response => {
-          dispatch(checkEmailExist(UserActionTypes.CHECK_EMAIL_EXIST, response.data.emailExists))
+          dispatch(success(UserActionTypes.EMAIL_DOES_NOT_EXIST, response.data.message))
         })
-        .catch(error => {
-          throw(error);
+        .catch(err => {
+          // throw(error);
+          console.log(err.response)
+          dispatch(error(UserActionTypes.EMAIL_EXISTS, err.response.data.message))
         });
     };
   }

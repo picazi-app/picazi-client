@@ -8,12 +8,13 @@ import {
   Link,
   RouteComponentProps,
   Router,
-  Redirect
+  Redirect,
+  RouteProps,
 } from "react-router-dom";
 
 import LoginPage from './screens/Login/components/LoginPage'
 import RegisterPage from './screens/Register/containers/RegisterPage';
-import { getSessionStateProps } from "./store/selector";
+import { getSessionStateProps, getAppErrorsStateProps } from "./store/selector";
 import { StateProps } from './store/types';
 // import { fetchUserProfile } from './screens/UserProfile/store/
 import { getUserSession} from './helpers/session';
@@ -21,14 +22,15 @@ import { saveUserSession } from './store/action';
 import { ProtectedRoute, AuthRoute} from './helpers/routes';
 import  Header from './components/Header';
 import { logout } from './store/action'
+import GenericNotFound from './components/GenericNotFound'
 interface MatchParams {
   postId: string
 }
-type OwnProps = RouteComponentProps
-
+type OwnProps = RouteComponentProps&RouteProps
 interface AppStateProps {
   isLoading: boolean;  
   isLoggedIn: boolean;
+  status: number | null;
 }
 interface ActionProps {
   saveUserSession: () => void;
@@ -46,31 +48,38 @@ class App extends React.Component<Props> {
   }
 
 	render(){
-    const { isLoading, isLoggedIn, logout, history } = this.props;
-    console.log(isLoading);
-    console.log(history.location);
+    const { isLoading, isLoggedIn, logout, history, status } = this.props;
+    // console.log(status);
+    // console.log(history.location);
 		return(
 			<div>
           {
             (isLoading  === false )?
-            <>
-            <Header isLoggedIn={isLoggedIn} title="Reduxstagram" logout={logout}/>
-            <Switch> 
-              <Route path="/view/:postId" component={PostInfo}/>
-              <Route path="/login" component={LoginPage}/>
-              <Route path="/signup" component={() => (<RegisterPage {...this.props} />)} />
-              {/* <Route exact path="/" component={() =>(
-                <PhotoGrid {...this.props}/>
-              )}/> */}
-              <Route exact={true} path="/" component={ PhotoGrid} />
-            </Switch>
-            </>
-
+              (status === 404) ?
+                <Route component={GenericNotFound}/>
+            
+              : (
+                <>
+                  <Header isLoggedIn={isLoggedIn} title="Reduxstagram" logout={logout}/>
+                  <Switch> 
+                    
+                    <Route path="/login" component={LoginPage}/>
+                    <Route path="/signup" component={() => (<RegisterPage {...this.props} />)} />
+                    {/* <Route exact path="/" component={() =>(
+                    <PhotoGrid {...this.props}/>
+                    )}/> */}
+                    <Route exact={true} path="/" component={ PhotoGrid} />
+                    <Route exact={true} path="/posts" component={ PhotoGrid} />
+                     <Route path="/view/:postId" component={PostInfo}/>     
+                      
+                  
+                  </Switch>
+                </> 
+              )
             : 
             <div>loading...loading...loading...loading...loading...loading... </div>
 
           }
-        
             
 			</div>
 		)
@@ -78,9 +87,11 @@ class App extends React.Component<Props> {
 }
 
 function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) : AppStateProps {
+  console.log(state)
   return {
     isLoading: getSessionStateProps(state).isLoading,
-    isLoggedIn: getSessionStateProps(state).isLoggedIn
+    isLoggedIn: getSessionStateProps(state).isLoggedIn,
+    status: getAppErrorsStateProps(state).status
   }
 }
 

@@ -1,7 +1,9 @@
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
 import { Post } from './types'
-const apiUrl = `${getBaseUrl()}/posts`;
+import { UserActionTypes } from '../../../store/action';
+const apiUrl = `${getBaseUrl()}`;
+
 
 export enum ActionTypes {
   ADD_COMMENT = "ADD_COMMENT",
@@ -11,7 +13,8 @@ export enum ActionTypes {
   FETCH_COMMENTS_FAILURE = "FETCH_COMMENT_FAILURE",
   VIEW_PHOTO = "VIEW_PHOTO",
   GET_PHOTO = "GET_PHOTO",
-  GET_PHOTO_FAILURE = "GET_PHOTO_FAILURE"
+  GET_PHOTO_FAILURE = "GET_PHOTO_FAILURE",
+  POSTINFO_INCREMENT_LIKES = "POSTINFO_INCREMENT_LIKES"
 }
 
 export interface AddCommentAction {
@@ -67,29 +70,6 @@ export const actionCreators = {
   },
 }
 
-// interface CommentResponseDataType {
-
-//   "postCode": "BAcyDyQwcXX",
-// "comments": [
-// {
-// "text": "Wes. WE should have lunch.",
-// "user": "jdaveknox"
-// },
-// {
-// "text": "#adults",
-// "user": "jdaveknox"
-// },
-// {
-// "text": "@jdaveknox yes!",
-// "user": "wesbos"
-// },
-// {
-// "text": "😍 love Hamilton!",
-// "user": "willowtreemegs"
-// }
-// ]
-// }
-
 function success(actionType: any, data: any) {
   return {
     type: actionType,
@@ -99,19 +79,20 @@ function success(actionType: any, data: any) {
 function error(actionType : any, data: any) {
   return {
     type: actionType,
-    data: data
+    data: data,
   }
 }
 export function fetchComments(postId: string) {
   return (dispatch: any) => {
-    return axios.get(`${apiUrl}/${postId}/comments`)
+    return axios.get(`${apiUrl}/posts/${postId}/comments`)
       .then(response => {
         dispatch(success(ActionTypes.FETCH_COMMENTS, response.data.comments))
       })
       .catch(err=> {
         console.log(err.response);
         if(err.response) {
-          dispatch(error(ActionTypes.FETCH_COMMENTS_FAILURE, err.response))
+          // dispatch(error(ActionTypes.FETCH_COMMENTS_FAILURE, err.response))
+          return dispatch(error(UserActionTypes.NOT_FOUND_ERROR, err.response))
         }
       });
   };
@@ -120,13 +101,34 @@ export function fetchComments(postId: string) {
 // Call an api to get photo details.
 export function getPhoto(postId: string) {
   return (dispatch: any) => {
-    return axios.get(`${apiUrl}/${postId}`)
+    return axios.get(`${apiUrl}/posts/${postId}`, 
+      { headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8',
+      }})
       .then(response => {
-        dispatch(success(ActionTypes.GET_PHOTO, response.data.post))
+        return dispatch(success(ActionTypes.GET_PHOTO, response.data.post))
       })
       .catch((err)=> {
         // let err = error.response ? error.response.data.err : error.message;
-        dispatch(error(ActionTypes.GET_PHOTO_FAILURE, err))
+        console.log(err.response)
+        // return dispatch(error(ActionTypes.GET_PHOTO_FAILURE, err))
+        if(err.response.data.status === 404){
+          return dispatch(error(UserActionTypes.NOT_FOUND_ERROR, err.response))
+        }
+      })
+  }
+}
+
+export function incrementLikes(postId: string, likes: number) {
+  return (dispatch: any) => {
+    return axios.patch(`${apiUrl}/posts/${postId}/likes`, {postId, likes},  {withCredentials: true})
+      .then((response) => {
+        console.log(response.data)
+        dispatch(success(ActionTypes.POSTINFO_INCREMENT_LIKES, response.data.post))
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }
 }
