@@ -87,7 +87,6 @@ class App extends React.Component<Props> {
 }
 
 function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) : AppStateProps {
-  console.log(state)
   return {
     isLoading: getSessionStateProps(state).isLoading,
     isLoggedIn: getSessionStateProps(state).isLoggedIn,

@@ -39,7 +39,6 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
     case 'ADD_COMMENT':
       //return the new state with new comment
       const commentsToAddTo = state.postInfo.comments;
-
       return {
         ...state,
         postInfo: {

@@ -11,7 +11,7 @@ import { getPostListData, incrementLikes } from '../store/action'
 import { viewPhoto } from '../../Post/store/actions';
 // import { logout } from '../../../store/action'
 import { getSessionStateProps, getAppErrorsStateProps } from '../../../store/selector'
-import { number } from 'prop-types';
+import PhotoUpload from '../components/PhotoUpload'
 
 interface PhotoGridStateProps{
   posts: PostList;
@@ -51,7 +51,7 @@ class PhotoGridContainer extends React.Component<Props> {
       <div>
         { isLoggedIn && 
           <>
-            <input type="text" />
+            <PhotoUpload />
             <div className="photo-grid">
               { postData }
             </div>

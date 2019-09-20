@@ -1,6 +1,5 @@
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
-import { func } from 'prop-types';
 const apiUrl = `${getBaseUrl()}`;
 
 // Action Types
