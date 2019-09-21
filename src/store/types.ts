@@ -13,6 +13,9 @@ export interface UserSession {
   isLoading: boolean;
 }
 
+export interface AppErrors {
+  status: number | null;
+}
 
 export interface StateProps {
   registration_screen: RegistrationFormProps;
@@ -20,4 +23,5 @@ export interface StateProps {
   postInfo_screen: PostInfoScreenProps;
   login_screen: LoginFormProps;
   user_session: UserSession;
+  app_errors: AppErrors;
 }

@@ -7,19 +7,22 @@ import { StateProps } from '../../../store/types';
 import { PostListScreenProps } from '../store/types'
 import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getPostListData } from '../store/action'
+import { getPostListData, incrementLikes } from '../store/action'
 import { viewPhoto } from '../../Post/store/actions';
 // import { logout } from '../../../store/action'
-import { getSessionStateProps } from '../../../store/selector'
+import { getSessionStateProps, getAppErrorsStateProps } from '../../../store/selector'
+import PhotoUpload from '../components/PhotoUpload'
 
 interface PhotoGridStateProps{
   posts: PostList;
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
+  // status: number | null;
 }
 
 interface PostGridActionProps {
   getPostListData: () => Promise<any>;
   viewPhoto: (post: Post) => void;
+  incrementLikes: (postId: string, likes: number) => void;
   // logout: () => void,
 }
 
@@ -27,25 +30,28 @@ type Props = PhotoGridStateProps & PostGridActionProps;
 
 
 class PhotoGridContainer extends React.Component<Props> {
-    componentDidMount() {
+  componentDidMount() {
     if(this.props.isLoggedIn){
       this.props.getPostListData()
     }
   }
+  handleClick(postId: string, likes: number) {
+    this.props.incrementLikes(postId, likes);
+  }
 	render(){
     const { posts, isLoggedIn } = this.props;
-    console.log("POSTgrid");
-    console.log(isLoggedIn);
+    // console.log("POSTgrid");
+    // console.log(isLoggedIn);
     const postData = posts ? posts.map((post, i)=> 
       {
-        return <Photo {...this.props} key={i} post={post} />
+        return <Photo {...this.props} key={i} post={post} incrementLikes={() => this.handleClick(post._id, post.likes)} />
       }) : null
 
 		return(
       <div>
         { isLoggedIn && 
           <>
-            <input type="text" />
+            <PhotoUpload />
             <div className="photo-grid">
               { postData }
             </div>
@@ -53,6 +59,7 @@ class PhotoGridContainer extends React.Component<Props> {
         }
         {!isLoggedIn && 
           <Redirect to='/login' />
+          
         }
       </div>
 		)
@@ -62,7 +69,8 @@ class PhotoGridContainer extends React.Component<Props> {
 function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) : PhotoGridStateProps {
   return {
     posts: getPostListStateProps(state).posts,
-    isLoggedIn: getSessionStateProps(state).isLoggedIn
+    isLoggedIn: getSessionStateProps(state).isLoggedIn,
+    // status: getAppErrorsStateProps(state).status
  
   }
 }
@@ -70,6 +78,7 @@ function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) :
 const PhotoGrid = withRouter(connect(mapStateToProps, {
   getPostListData: getPostListData,
   viewPhoto: viewPhoto,
+  incrementLikes: incrementLikes
   // logout: logout
 })(PhotoGridContainer));
 

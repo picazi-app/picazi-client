@@ -25,7 +25,7 @@ export function reducers(state: RegistrationFormProps = defaultRegistrationFormP
      return {
         ...state,
         status:{ 
-          success:action.success,
+          success:action.data,
           failure: ""
         },
         submitted: true,
@@ -36,18 +36,28 @@ export function reducers(state: RegistrationFormProps = defaultRegistrationFormP
         ...state,
         status:{ 
           success: "",
-          failure: action.error
+          failure: action.data
         },
         submitted: false,
         isNewUser: true
      }
-     case 'CHECK_EMAIL_EXIST':
-      const val = action.emailExists
+     case 'EMAIL_DOES_NOT_EXIST':
+      const val = action.data.emailExists
      return {
         ...state,
-        emailExists: val,
-        isNewUser: val ? false: true,
-        formErrors: val ? {...state.formErrors, email: "This email is already registered with another account"} : {}
+        emailExists: false,
+        isNewUser: true,
+        formErrors: {...state.formErrors, email: ''}
+        // isNewUser: val ? false: true,
+        // formErrors: val ? {...state.formErrors, email: "This email is already registered with another account"} : {}
+     }
+     case 'EMAIL_EXISTS':
+      const emailExists = action.data
+     return {
+        ...state,
+        emailExists: emailExists,
+        isNewUser: false,
+        formErrors: {...state.formErrors, email: "This email is already registered with another account"}
      }
     default: 
      return state;

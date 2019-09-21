@@ -8,6 +8,7 @@ export enum UserActionTypes {
   FETCH_USER_SESSION = "FETCH_USER_SESSION",
   SET_USER_SESSION = "SET_USER_SESSION",
   REMOVE_USER_SESSION = "REMOVE_USER_SESSION",
+  NOT_FOUND_ERROR = "NOT_FOUND_ERROR"
 }
 
 
@@ -40,7 +41,7 @@ export function logout() {
 export function saveUserSession() {
   return (dispatch: any) => {
     dispatch(success(UserActionTypes.FETCH_USER_SESSION, ''));
-    return axios.get(`${apiUrl}/api/session`, {withCredentials: true})
+    return axios.get(`${apiUrl}/api/session/saveSession`, {withCredentials: true})
       .then(response => {          
           if (response.status >= 200 && response.status < 300) {
             if(response.data.isLoggedIn) {

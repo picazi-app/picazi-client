@@ -28,7 +28,7 @@ export const error = (actionType: any, data: {}) => {
 }
 export function login(user: LoginUserFieldInfo) {
   return (dispatch: any) => {
-    return axios.post(`${apiUrl}/api/session`, {...user}, {withCredentials: true})
+    return axios.post(`${apiUrl}/api/session/login`, {...user}, {withCredentials: true})
       .then(response => {
           if (response.status >= 200 && response.status < 300) {
             dispatch(success(UserActionTypes.LOGIN_SUCCESS, response.data.user))
@@ -39,8 +39,9 @@ export function login(user: LoginUserFieldInfo) {
           }
       })
       .catch(err => {
+        console.log("err.response.............", err.response)
         if(err.response){
-          dispatch(dispatch(error(UserActionTypes.LOGIN_FAILURE, err.response.data.error)));
+          dispatch(dispatch(error(UserActionTypes.LOGIN_FAILURE, err.response.data)));
         }
       });
   };

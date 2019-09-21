@@ -26,7 +26,7 @@ export function reducers(state: LoginFormProps = defaultLoginFormProps, action: 
     case 'LOGIN_FAILURE':
       return {
         status: {
-          failure: action.data.msg,
+          failure: action.data.message,
           success: ''
         },
         submitted: false

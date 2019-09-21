@@ -17,16 +17,20 @@ export const defaultPostListScreenProps: PostListScreenProps = {
 export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction) : PostListScreenProps {
 	switch(action.type) {
 		case 'INCREMENT_LIKES' :
-			console.log("INCREMENTING Likes!!")
-      const i = action.index;
-      
+      let posts = state.posts;
+
+      posts = posts.map(post => {
+        if (post._id === action.data._id) {
+          console.log(post)
+          post.likes = action.data.likes;
+        }
+        return post;
+      });
+
       return {
-        ...state,
-        posts: [
-          ...state.posts.slice(0, i), //before the one we are updating
-          {...state.posts[i], likes: state.posts[i].likes + 1},
-          ...state.posts.slice(i+1), // after the one we are updating
-        ]
+        ...state,        
+        posts: posts
+        
       }
     case ActionTypes.GET_POSTLIST:
     return {

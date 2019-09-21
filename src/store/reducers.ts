@@ -6,11 +6,15 @@ import { postComments as postCommentsReducer} from '../screens/Post/store/reduce
 import { reducers as loginReducer } from '../screens/Login/store/reducer';
 
 import { combineReducers } from 'redux';
-import { UserSession } from "./types";
+import { UserSession, AppErrors } from "./types";
 
 export const defaultUserSessionProps: UserSession = {
   isLoggedIn: false,
   isLoading: true
+}
+
+export const defaultAppError : AppErrors = {
+  status: null
 }
 
 export function userSessionReducers(state: UserSession = defaultUserSessionProps, action: any) : UserSession {
@@ -26,15 +30,27 @@ export function userSessionReducers(state: UserSession = defaultUserSessionProps
         isLoggedIn: true,
         user: action.data,
         isLoading: false,
-      };
+      }
     case 'REMOVE_USER_SESSION':
-        return {
-          isLoggedIn: false,
-          isLoading: false
-        };
+      return {
+        isLoggedIn: false,
+        isLoading: false
+      }
     default:
       return state;
     }
+}
+
+export function appErrors(state: AppErrors= defaultAppError, action: any): AppErrors {
+  switch(action.type) {
+    case 'NOT_FOUND_ERROR':
+      console.log("action.data inside appErrors: ", action.data.data)
+      return {
+        status: action.data.status
+      };
+    default:
+        return state;
+  }
 }
 
 const appReducer = combineReducers({
@@ -43,7 +59,8 @@ const appReducer = combineReducers({
   postList_screen: postListReducer,
   postInfo_screen: postCommentsReducer,
   user_session: userSessionReducers,
-  routing: routerReducer
+  routing: routerReducer,
+  app_errors: appErrors
 });
 
 const rootReducer = (state: any, action: any) => {
