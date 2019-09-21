@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 interface Props {
   isLoggedIn: boolean;
   title: string;
+  logoutRedirectUrl: string;
   logout: () => void
 }
 
 class Header extends React.Component<Props> {
 
 render() {
-  const { isLoggedIn, title, logout} = this.props;
+  const { isLoggedIn, title, logout, logoutRedirectUrl} = this.props;
     return (
         <div>
           <h1>
@@ -30,7 +31,9 @@ render() {
               Logout
             </button>
             :
-            <Redirect to='/login' />
+            <Redirect to={
+              (logoutRedirectUrl === "/login" || logoutRedirectUrl === "/signup") ? logoutRedirectUrl  : "/login"
+             } />
           }
         </div>
     );

@@ -5,7 +5,7 @@ import Comments from '../components/Comments';
 import { Post } from '../../Post/store/types';
 import { Comment } from '../store/types'
 import { actionCreators } from '../store/actions';
-import { AddCommentAction, RemoveCommentAction } from '../store/actions';
+import { RemoveCommentAction } from '../store/actions';
 import { connect  } from 'react-redux';
 import { StateProps } from '../../../store/types';
 import { PostInfoScreenProps } from "../store/types";
@@ -15,7 +15,7 @@ import { fetchComments } from '../store/actions';
 import { getSessionStateProps } from '../../../store/selector';
 import {getAppErrorsStateProps} from '../../../store/selector'
 import GenericNotFound from '../../../components/GenericNotFound';
-import { incrementLikes } from '../store/actions';
+import { incrementLikes, saveComment } from '../store/actions';
 interface MatchParams {
   postId: string
 }
@@ -24,7 +24,8 @@ type OwnProps = RouteComponentProps<MatchParams>;
 type PostInfoProps = PostInfoScreenProps;
 
 interface PostInfoActionProps {
-  addComment: (postId: string, author: string, comment: string) => AddCommentAction;
+  // addComment: (postId: string, author: string, comment: string) => AddCommentAction;
+  saveComment: (postId: string, comment: string) => void;
   removeComment: (postId: string, i: number) => RemoveCommentAction;
   getPhoto: (postId: any) => Promise<any>;
   fetchComments: (postId: string) => void;
@@ -36,9 +37,7 @@ type Props = OwnProps & PostInfoProps & PostInfoActionProps;
 class PostInfoContainer extends React.Component<Props>{
   componentDidMount() {
     const { postId } = this.props.match.params
-    //call action to get photo info
     this.props.getPhoto(postId);
-    // call action to fetch comments
     this.props.fetchComments(postId);
   }
 
@@ -52,13 +51,10 @@ class PostInfoContainer extends React.Component<Props>{
 		return(
       <>
       { 
-        // (this.props.status) === 404 
-        //   ? 
-          // <GenericNotFound/> : 
-          <div className="single-photo">
-            <Photo post={postInfo.post} incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)}/>
-            <Comments postComments={postComments} {...this.props}/>
-          </div>
+        <div className="single-photo">
+          <Photo post={postInfo.post} incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)}/>
+          <Comments postComments={postComments} {...this.props}/>
+        </div>
       }
 			</>
 		)
@@ -74,7 +70,7 @@ function mapStateToProps(state: StateProps, { location }: RouteComponentProps ){
 }
 
 const PostInfo = withRouter(connect(mapStateToProps, {
-  addComment: actionCreators.addComment,
+  saveComment: saveComment,
   removeComment: actionCreators.removeComment,
   getPhoto: getPhoto,
   fetchComments: fetchComments,

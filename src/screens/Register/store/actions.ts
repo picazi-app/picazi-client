@@ -8,6 +8,10 @@ export enum UserActionTypes {
   REGISTER_REQUEST = "REGISTER_REQUEST",
   REGISTER_SUCCESS = "REGISTER_SUCCESS",
   REGISTER_FAILURE = "REGISTER_FAILURE",
+
+  USERNAME_DOES_NOT_EXIST = "USERNAME_DOES_NOT_EXIST",
+  USERNAME_EXISTS = "USERNAME_EXISTS",
+
   EMAIL_EXISTS = "EMAIL_EXISTS",
   EMAIL_DOES_NOT_EXIST = "EMAIL_DOES_NOT_EXIST",
   CHECK_EMAIL_EXIST = "CHECK_EMAIL_EXIST",
@@ -64,7 +68,7 @@ export function register(user: User) {
   return (dispatch: any) => {
     return axios.post(`${apiUrl}/email/register`, {...user})
       .then(response => {
-        console.log(response);
+        // console.log(response);
         dispatch(success(UserActionTypes.REGISTER_SUCCESS, response.data.msg));
         if(response.status === 200) {
           history.push('/login')
@@ -97,4 +101,18 @@ export const doesEmailExist =  (email: string) => {
         });
     };
   }
-  
+
+export const doesUserNameExist = (username: string) => {
+  return (dispatch: any) => {
+    return axios.post(`${apiUrl}/username/check`, {username})
+      .then(response => {
+          dispatch(success(UserActionTypes.USERNAME_DOES_NOT_EXIST, response.data.message))
+      })
+      .catch((err) => {
+        console.log(err.response)
+        if(err.response) {
+          dispatch(error(UserActionTypes.USERNAME_EXISTS, err.response.data.message))
+        }
+      })
+  }
+}

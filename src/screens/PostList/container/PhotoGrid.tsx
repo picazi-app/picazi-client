@@ -8,7 +8,7 @@ import { PostListScreenProps } from '../store/types'
 import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getPostListData, incrementLikes } from '../store/action'
-import { viewPhoto } from '../../Post/store/actions';
+// import { viewPhoto } from '../../Post/store/actions';
 // import { logout } from '../../../store/action'
 import { getSessionStateProps, getAppErrorsStateProps } from '../../../store/selector'
 import PhotoUpload from '../components/PhotoUpload'
@@ -21,7 +21,7 @@ interface PhotoGridStateProps{
 
 interface PostGridActionProps {
   getPostListData: () => Promise<any>;
-  viewPhoto: (post: Post) => void;
+  // viewPhoto: (post: Post) => void;
   incrementLikes: (postId: string, likes: number) => void;
   // logout: () => void,
 }
@@ -77,7 +77,7 @@ function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) :
 
 const PhotoGrid = withRouter(connect(mapStateToProps, {
   getPostListData: getPostListData,
-  viewPhoto: viewPhoto,
+  // viewPhoto: viewPhoto,
   incrementLikes: incrementLikes
   // logout: logout
 })(PhotoGridContainer));

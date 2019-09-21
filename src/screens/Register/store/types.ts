@@ -20,6 +20,7 @@ export interface RegistrationFormProps {
   isNewUser: boolean;
   submitted: boolean;
   emailExists: boolean;
+  usernameExists: boolean;
 }
 
 export interface RegistrationFormStatus {

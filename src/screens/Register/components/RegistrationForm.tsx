@@ -15,6 +15,9 @@ interface Props {
   user: UserFieldInfo;
 }
 
+const style = {
+  color: "red"
+}
 class Registration extends React.Component<Props> {   
     render() {     
       const { 
@@ -43,7 +46,7 @@ class Registration extends React.Component<Props> {
                     onBlur={handleFirstName}
                     onChange={handleChange}>
                 </input>
-                <div> {formErrors ? formErrors.firstName : null} </div>
+                <div style={style}> {formErrors ? formErrors.firstName : null} </div>
               </div>
               <div className="form-group">
                 <label htmlFor="username">Username</label>
@@ -55,7 +58,7 @@ class Registration extends React.Component<Props> {
                     onBlur={handleUsername}
                     onChange={handleChange}>
                 </input>
-                <div> {formErrors ? formErrors.username : null} </div>
+                <div style={style}> {formErrors ? formErrors.username : null} </div>
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
@@ -67,7 +70,7 @@ class Registration extends React.Component<Props> {
                     onBlur={handleEmail}
                     onChange={handleChange}>
                 </input>
-                <div> {formErrors ? formErrors.email : null} </div>
+                <div style={style}> {formErrors ? formErrors.email : null} </div>
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
@@ -79,7 +82,7 @@ class Registration extends React.Component<Props> {
                     onBlur={handlePassword}
                     onChange={handleChange}>
                 </input>
-                <div> {formErrors ? formErrors.password : null} </div>
+                <div style={style}> {formErrors ? formErrors.password : null} </div>
               </div>
               <div className="form-group">
                 <label htmlFor="confirmPass">Confirm password</label>
@@ -91,7 +94,7 @@ class Registration extends React.Component<Props> {
                     onBlur={handleComparePassword} 
                     onChange={handleChange}>
                 </input>
-                <div> {formErrors ? formErrors.confirmPassword : null} </div>
+                <div style={style}> {formErrors ? formErrors.confirmPassword : null} </div>
               </div>
               <div className="form-group">
                   <button className="btn btn-primary"  onClick={handleSubmit}>Register</button>
