@@ -4,18 +4,14 @@ import Photo from '../../../components/Photo';
 import Comments from '../components/Comments';
 import { Post } from '../../Post/store/types';
 import { Comment } from '../store/types'
-import { actionCreators } from '../store/actions';
-import { RemoveCommentAction } from '../store/actions';
 import { connect  } from 'react-redux';
 import { StateProps } from '../../../store/types';
 import { PostInfoScreenProps } from "../store/types";
 import { getPostInfoStateProps } from "../store/selectors";
 import { getPhoto } from '../store/actions'
 import { fetchComments } from '../store/actions';
-import { getSessionStateProps } from '../../../store/selector';
 import {getAppErrorsStateProps} from '../../../store/selector'
-import GenericNotFound from '../../../components/GenericNotFound';
-import { incrementLikes, saveComment } from '../store/actions';
+import { incrementLikes, saveComment, removeComment } from '../store/actions';
 interface MatchParams {
   postId: string
 }
@@ -26,7 +22,7 @@ type PostInfoProps = PostInfoScreenProps;
 interface PostInfoActionProps {
   // addComment: (postId: string, author: string, comment: string) => AddCommentAction;
   saveComment: (postId: string, comment: string) => void;
-  removeComment: (postId: string, i: number) => RemoveCommentAction;
+  removeComment: (postId: string, commentId: string) => void;
   getPhoto: (postId: any) => Promise<any>;
   fetchComments: (postId: string) => void;
   incrementLikes: (postId: string, likes: number) => void;
@@ -71,7 +67,7 @@ function mapStateToProps(state: StateProps, { location }: RouteComponentProps ){
 
 const PostInfo = withRouter(connect(mapStateToProps, {
   saveComment: saveComment,
-  removeComment: actionCreators.removeComment,
+  removeComment: removeComment,
   getPhoto: getPhoto,
   fetchComments: fetchComments,
   incrementLikes: incrementLikes

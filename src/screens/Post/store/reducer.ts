@@ -28,11 +28,12 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
         }  
       }
     case 'FETCH_COMMENTS': 
+    console.log(action.data)
       return {
         ...state,
         postInfo: {
           post: state.postInfo.post,
-          comments: action.data.comments
+          comments: action.data
         }  
       }
     case 'SAVE_COMMENTS':
@@ -54,15 +55,12 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
       };
 
     case 'REMOVE_COMMENT':
-      const commentsToRemoveFrom = state.postInfo.comments;
+      // const commentsToRemoveFrom = state.postInfo.comments;
       return {
         ...state,
         postInfo: {
           post: state.postInfo.post,
-          comments: [
-            ...commentsToRemoveFrom.slice(0, action.index),
-            ...commentsToRemoveFrom.slice(action.index + 1)
-          ]
+          comments: action.data.comments
         } 
       };
     // case 'VIEW_PHOTO':
