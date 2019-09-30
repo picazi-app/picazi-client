@@ -18,7 +18,11 @@ interface StateProps {
   error: Error
 }
 
-class UploadPhoto extends React.Component<{}, StateProps> {
+interface Props {
+  getPostListData: () => Promise<any>; 
+}
+
+class UploadPhoto extends React.Component<Props, StateProps> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -99,7 +103,7 @@ class UploadPhoto extends React.Component<{}, StateProps> {
             if(response.data) {
               this.setState( {
                 imagePreviewUrl: '',
-              })
+              }, () => this.props.getPostListData())
             }      
           })
           .catch((err) => {

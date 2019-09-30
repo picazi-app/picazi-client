@@ -39,7 +39,7 @@ class PhotoGridContainer extends React.Component<Props> {
     this.props.incrementLikes(postId, likes);
   }
 	render(){
-    const { posts, isLoggedIn } = this.props;
+    const { posts, isLoggedIn, getPostListData } = this.props;
     // console.log("POSTgrid");
     // console.log(isLoggedIn);
     const postData = posts ? posts.map((post, i)=> 
@@ -51,7 +51,7 @@ class PhotoGridContainer extends React.Component<Props> {
       <div>
         { isLoggedIn && 
           <>
-            <PhotoUpload />
+            <PhotoUpload getPostListData={getPostListData}/>
             <div className="photo-grid">
               { postData }
             </div>
