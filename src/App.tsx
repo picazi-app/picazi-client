@@ -49,8 +49,7 @@ class App extends React.Component<Props> {
 
 	render(){
     const { isLoading, isLoggedIn, logout, history, status } = this.props;
-    // console.log(status);
-    // console.log(history.location);
+    const url = history.location.pathname;
 		return(
 			<div>
           {
@@ -60,9 +59,13 @@ class App extends React.Component<Props> {
             
               : (
                 <>
-                  <Header isLoggedIn={isLoggedIn} title="Reduxstagram" logout={logout}/>
-                  <Switch> 
-                    
+                  <Header
+                    isLoggedIn={isLoggedIn}
+                    title="Reduxstagram"
+                    logout={logout} 
+                    logoutRedirectUrl={url}
+                  />
+                  <Switch>                     
                     <Route path="/login" component={LoginPage}/>
                     <Route path="/signup" component={() => (<RegisterPage {...this.props} />)} />
                     {/* <Route exact path="/" component={() =>(

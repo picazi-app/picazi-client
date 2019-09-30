@@ -1,6 +1,5 @@
-import {  ActionPayloads } from './actions';
 import { PostInfoScreenProps} from './types';
-import { stat } from 'fs';
+import Comments from '../components/Comments';
 
 export const defaultPostInfoScreenProps: PostInfoScreenProps = {
   postInfo: {
@@ -15,7 +14,7 @@ export const defaultPostInfoScreenProps: PostInfoScreenProps = {
   }
 };
 
-export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenProps, action: ActionPayloads | any) : PostInfoScreenProps {
+export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenProps, action: any) : PostInfoScreenProps {
 	switch(action.type) {
     case 'POSTINFO_INCREMENT_LIKES': 
       return {
@@ -29,54 +28,56 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
         }  
       }
     case 'FETCH_COMMENTS': 
+    console.log(action.data)
+      return {
+        ...state,
+        postInfo: {
+          post: state.postInfo.post,
+          comments: action.data
+        }  
+      }
+    case 'SAVE_COMMENTS':
+      //return the new state with new comment
+      const commentsToAddTo = state.postInfo.comments;
+      console.log(action.data);
+      const comments = action.data;
+     
+      return {
+        ...state,
+        postInfo: {
+          post: state.postInfo.post,
+          // comments: commentsToAddTo.concat({
+          //   username: action.data.username,
+          //   text: action.data.text
+          // })
+          comments:comments
+        } 
+      };
+
+    case 'REMOVE_COMMENT':
+      // const commentsToRemoveFrom = state.postInfo.comments;
       return {
         ...state,
         postInfo: {
           post: state.postInfo.post,
           comments: action.data.comments
-        }  
-      }
-    case 'ADD_COMMENT':
-      //return the new state with new comment
-      const commentsToAddTo = state.postInfo.comments;
-      return {
-        ...state,
-        postInfo: {
-          post: state.postInfo.post,
-          comments: commentsToAddTo.concat({
-            user: action.author,
-            text: action.comment
-          })
         } 
       };
-
-    case 'REMOVE_COMMENT':
-      const commentsToRemoveFrom = state.postInfo.comments;
-      return {
-        ...state,
-        postInfo: {
-          post: state.postInfo.post,
-          comments: [
-            ...commentsToRemoveFrom.slice(0, action.index),
-            ...commentsToRemoveFrom.slice(action.index + 1)
-          ]
-        } 
-      };
-    case 'VIEW_PHOTO':
-      const post = state.postInfo.post;
-      return {
-        ...state,
-        postInfo: {
-          post: {
-            _id: action.post._id,
-            caption: action.post.caption,
-            likes: action.post.likes,
-            display_src: action.post.display_src,
-            totalComments: action.post.totalComments
-          },
-          comments: state.postInfo.comments
-        }
-      }
+    // case 'VIEW_PHOTO':
+    //   const post = state.postInfo.post;
+    //   return {
+    //     ...state,
+    //     postInfo: {
+    //       post: {
+    //         _id: action.post._id,
+    //         caption: action.post.caption,
+    //         likes: action.post.likes,
+    //         display_src: action.post.display_src,
+    //         totalComments: action.post.totalComments
+    //       },
+    //       comments: state.postInfo.comments
+    //     }
+    //   }
     case 'GET_PHOTO':
       return {
         ...state,

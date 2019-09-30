@@ -15,12 +15,6 @@ class Photo extends React.Component<PhotoProps> {
     this.props.incrementLikes(postId, likes);
   }
 
-  // function getAssetURl() {
-  //   return "localhost:8000/assets/img";
-  // }
-
-  // <img src={getAssetURl()+postMessage.display_src} />
-
 	render(){
     const { post } = this.props;
 

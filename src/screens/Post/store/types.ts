@@ -6,8 +6,9 @@ export interface Post {
   totalComments: number;
 }
 export interface Comment {
+  _id: string;
   text: string;
-  user: string;
+  username: string;
 }
 
 export interface PostInfo {

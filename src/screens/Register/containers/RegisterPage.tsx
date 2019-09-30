@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link, withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../../../App.css';
 // import {isEmailAvailable} from '../../../helpers/api';
-import { doesEmailExist } from '../store/actions';
+import { doesEmailExist, doesUserNameExist } from '../store/actions';
 import {register, User} from '../store/actions';
 import { 
   validateName,
@@ -28,6 +28,7 @@ interface StateType {
 interface ActionProps {
   register: (user: User) => any;
   doesEmailExist: (email: string) => void;
+  doesUserNameExist: (username: string) => void;
 }
 
 interface DataProps {
@@ -37,6 +38,7 @@ interface DataProps {
     failure?: string,  
   }
   emailExists: boolean;
+  usernameExists: boolean;
   isLoggedIn: boolean;
 }
 
@@ -142,7 +144,7 @@ class RegisterPage extends React.Component<Props, StateType> {
       const { username } = this.state.user;
       const { formErrors } = this.state;
       const usernameError = validateUsername(username)
-      if (usernameError) {
+      if(usernameError) {
         this.setState({
           formErrors: {
             ...formErrors,
@@ -156,6 +158,8 @@ class RegisterPage extends React.Component<Props, StateType> {
           formErrors: formErrors
         })
       } 
+
+      this.props.doesUserNameExist(username);
     }
 
     handleEmail = async() => {
@@ -177,11 +181,11 @@ class RegisterPage extends React.Component<Props, StateType> {
 
     handleSubmit = ()  => {
 
-      const { user } = this.state;
-      const { emailExists } = this.props;
+      const { user, formErrors } = this.state;
+      const { emailExists, usernameExists } = this.props;
       const errors = validateForm(user);
       console.log(errors)
-      if((Object.entries(errors).length === 0 && errors.constructor === Object) && emailExists === false) {
+      if((Object.entries(errors).length === 0 && errors.constructor === Object) && emailExists === false && usernameExists === false) {
         this.props.register({
           firstName: user.firstName,
           username: user.username,
@@ -190,12 +194,20 @@ class RegisterPage extends React.Component<Props, StateType> {
         });
         this.clear();
       }
-      else if( emailExists === true && errors) {
+      else if(emailExists === true) {
         console.log("errors inside second if", errors)
         this.setState({
           formErrors: {
-            ...errors,
+            ...formErrors,
             email: "This email is already registered with another account."
+          }
+        });
+      }
+      else if(usernameExists === true) {
+        this.setState({
+          formErrors: {
+            ...formErrors,
+            username: this.state.formErrors.username
           }
         });
       }
@@ -241,14 +253,17 @@ class RegisterPage extends React.Component<Props, StateType> {
     }
 }
 function mapStateToProps(state: StateProps){
+  console.log(getRegistrationStateProps(state))
    return {
     status: getRegistrationStateProps(state).status,
     emailExists: getRegistrationStateProps(state).emailExists,
     formErrors: getRegistrationStateProps(state).formErrors,
     isLoggedIn: getSessionStateProps(state).isLoggedIn,
+    usernameExists: getRegistrationStateProps(state).usernameExists
   }
 }
 export default connect(mapStateToProps, {
   register: register,
-  doesEmailExist: doesEmailExist
+  doesEmailExist: doesEmailExist,
+  doesUserNameExist: doesUserNameExist
 })(RegisterPage);
