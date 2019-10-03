@@ -11,7 +11,7 @@ import { getPostInfoStateProps } from "../store/selectors";
 import { getPhoto } from '../store/actions'
 import { fetchComments } from '../store/actions';
 import {getAppErrorsStateProps} from '../../../store/selector'
-import { incrementLikes, saveComment, removeComment } from '../store/actions';
+import { incrementLikes, saveComment, removeComment, removeSinglePost } from '../store/actions';
 interface MatchParams {
   postId: string
 }
@@ -23,6 +23,7 @@ interface PostInfoActionProps {
   // addComment: (postId: string, author: string, comment: string) => AddCommentAction;
   saveComment: (postId: string, comment: string) => void;
   removeComment: (postId: string, commentId: string) => void;
+  removeSinglePost: (postId: string) => void;
   getPhoto: (postId: any) => Promise<any>;
   fetchComments: (postId: string) => void;
   incrementLikes: (postId: string, likes: number) => void;
@@ -48,7 +49,7 @@ class PostInfoContainer extends React.Component<Props>{
       <>
       { 
         <div className="single-photo">
-          <Photo post={postInfo.post} incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)}/>
+          <Photo post={postInfo.post} incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)} {...this.props}/>
           <Comments postComments={postComments} {...this.props}/>
         </div>
       }
@@ -70,7 +71,8 @@ const PostInfo = withRouter(connect(mapStateToProps, {
   removeComment: removeComment,
   getPhoto: getPhoto,
   fetchComments: fetchComments,
-  incrementLikes: incrementLikes
+  incrementLikes: incrementLikes,
+  removeSinglePost: removeSinglePost
 })(PostInfoContainer));
 
 export default PostInfo;

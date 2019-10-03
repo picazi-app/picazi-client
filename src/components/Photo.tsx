@@ -7,6 +7,7 @@ import { Post } from '../screens/Post/store/types';
 interface PhotoProps {
   post: Post;
   incrementLikes: (postId: string, likes: number) => void;
+  removeSinglePost: (postId: string) => void;
 }
 
 class Photo extends React.Component<PhotoProps> {
@@ -17,10 +18,12 @@ class Photo extends React.Component<PhotoProps> {
 
 	render(){
     const { post } = this.props;
-
+// onClick={() => this.props.removeSinglePost(post._id)}
 		return(
 			<figure className="grid-figure">
 				<div className="grid-photo-wrap">
+          <button className="remove-post" 
+            >&times;</button>
 					<Link to={`/view/${post._id}`}>
 						<img src={post.display_src} alt={post.caption} className="grid-photo"/>
 					</Link>
