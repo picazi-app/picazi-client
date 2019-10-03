@@ -12,11 +12,11 @@ export enum ActionTypes {
 
   REMOVE_COMMENT = "REMOVE_COMMENT",
 
+  REMOVE_POST = "REMOVE_POST",
+
   FETCH_COMMENTS = "FETCH_COMMENTS",
   FETCH_COMMENTS_SUCCESS = "FETCH_COMMENT_SUCCESS",
   FETCH_COMMENTS_FAILURE = "FETCH_COMMENT_FAILURE",
-
-  // VIEW_PHOTO = "VIEW_PHOTO",
 
   GET_PHOTO = "GET_PHOTO",
   GET_PHOTO_FAILURE = "GET_PHOTO_FAILURE",
@@ -36,46 +36,6 @@ export interface RemoveCommentAction {
   index: number
 }
 
-// export interface FetchCommentsAction {
-//   type: ActionTypes.FETCH_COMMENTS,
-//   postId: string
-// }
-
-// export interface ViewPhoto {
-//   type: ActionTypes.VIEW_PHOTO;
-//   post: Post
-// }
-// export type ActionPayloads = FetchCommentsAction | AddCommentAction | RemoveCommentAction | ViewPhoto;
-//actions are just Objects
-// export const actionCreators = {
-
-//   // fetchCommentsForPost: (postId: string) : FetchCommentsAction => {
-//   //   return {
-//   //     type: ActionTypes.FETCH_COMMENTS,
-//   //     postId: postId,
-//   //   }
-//   // },
-
-//   //add comment
-//   // addComment: (postId: string, author: string, comment: string ) : AddCommentAction => {
-//   //   console.log("dispatching add comment")
-//   //   return {
-//   //     type: ActionTypes.ADD_COMMENT,
-//   //     postId: postId,
-//   //     author: author,
-//   //     comment: comment
-//   //   }
-//   // },
-  
-//   //remove comment from a particular posts
-//   removeComment: (postId: string, index: number) => {
-//     return {
-//       type: ActionTypes.REMOVE_COMMENT,
-//       postId,
-//       index
-//     }
-//   },
-// }
 
 function success(actionType: any, data: any) {
   return {
@@ -168,6 +128,23 @@ export function removeComment(postId: string, commentId: string) {
             console.log(err);
           return dispatch(error(UserActionTypes.NOT_FOUND_ERROR, err.response))
         }
+      });
+  };
+}
+
+export function removeSinglePost(postId: string) {
+  return (dispatch: any) => {
+    return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
+      .then(response => {
+        console.log(response.data)
+        // dispatch(success(ActionTypes.FETCH_COMMENTS, response.data.comments))
+      })
+      .catch(err=> {
+        console.log(err.response);
+        // if(err.response) {
+        //     console.log(err);
+        //   // return dispatch(error(UserActionTypes.NOT_FOUND_ERROR, err.response))
+        // }
       });
   };
 }

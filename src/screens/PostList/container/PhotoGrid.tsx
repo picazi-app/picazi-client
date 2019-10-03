@@ -12,6 +12,7 @@ import { getPostListData, incrementLikes } from '../store/action'
 // import { logout } from '../../../store/action'
 import { getSessionStateProps, getAppErrorsStateProps } from '../../../store/selector'
 import PhotoUpload from '../components/PhotoUpload'
+import { removeSinglePost } from '../store/action'
 
 interface PhotoGridStateProps{
   posts: PostList;
@@ -21,7 +22,7 @@ interface PhotoGridStateProps{
 
 interface PostGridActionProps {
   getPostListData: () => Promise<any>;
-  // viewPhoto: (post: Post) => void;
+  removeSinglePost: (postId: string) => void;
   incrementLikes: (postId: string, likes: number) => void;
   // logout: () => void,
 }
@@ -38,13 +39,17 @@ class PhotoGridContainer extends React.Component<Props> {
   handleClick(postId: string, likes: number) {
     this.props.incrementLikes(postId, likes);
   }
+  handleClickRemovePost(postId: string) {
+    this.props.removeSinglePost(postId);
+  }
 	render(){
     const { posts, isLoggedIn, getPostListData } = this.props;
-    // console.log("POSTgrid");
-    // console.log(isLoggedIn);
+    
     const postData = posts ? posts.map((post, i)=> 
       {
-        return <Photo {...this.props} key={i} post={post} incrementLikes={() => this.handleClick(post._id, post.likes)} />
+        return <Photo {...this.props} key={i} post={post} 
+                  incrementLikes={() => this.handleClick(post._id, post.likes)} 
+                  removeSinglePost={() => this.handleClickRemovePost(post._id)} />
       }) : null
 
 		return(
@@ -77,7 +82,7 @@ function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) :
 
 const PhotoGrid = withRouter(connect(mapStateToProps, {
   getPostListData: getPostListData,
-  // viewPhoto: viewPhoto,
+  removeSinglePost: removeSinglePost,
   incrementLikes: incrementLikes
   // logout: logout
 })(PhotoGridContainer));

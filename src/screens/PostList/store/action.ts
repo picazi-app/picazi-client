@@ -105,3 +105,17 @@ export function incrementLikes(postId: string, likes: number) {
       })
   }
 }
+
+export function removeSinglePost(postId: string) {
+  return (dispatch: any) => {
+    return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
+      .then(response => {
+        console.log(response.data)
+        dispatch(success(ActionTypes.GET_POSTLIST, response.data.posts))
+      })
+      .catch(err=> {
+        console.log(err.response);
+        
+      });
+  };
+}

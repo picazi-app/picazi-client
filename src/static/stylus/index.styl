@@ -47,7 +47,7 @@ body
   margin-left -2rem
   margin-top -2rem
   max-width none
-
+  
 // Comments
 .remove-comment
   background none
@@ -80,9 +80,26 @@ body
     outline none
     resize vertical
 
+// Post
+.remove-post
+  background white
+  font-size 30px
+  border 0
+  line-height 1
+  opacity: 0
+  position absolute
+  top 0px
+  right 0px
+  transition all ease-in-out 0.2s
+  &:hover
+    color red
+
 
 .grid-photo-wrap
   position relative
+  &:hover
+    .remove-post
+      opacity 1
   
 .likes-heart
   background url(http://f.cl.ly/items/3Y373q2Q3J3Y1j203n0m/Bitmap-3.png) center no-repeat
