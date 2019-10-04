@@ -18,12 +18,10 @@ class Photo extends React.Component<PhotoProps> {
 
 	render(){
     const { post } = this.props;
-// onClick={() => this.props.removeSinglePost(post._id)}
 		return(
 			<figure className="grid-figure">
 				<div className="grid-photo-wrap">
-          <button className="remove-post" 
-            >&times;</button>
+          <button className="remove-post" onClick={() => this.props.removeSinglePost(post._id)}>&times;</button>
 					<Link to={`/view/${post._id}`}>
 						<img src={post.display_src} alt={post.caption} className="grid-photo"/>
 					</Link>
