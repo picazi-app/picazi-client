@@ -2,6 +2,10 @@
   "name": "my-reduxtagram",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.15.3",
+    "npm": "6.4.1"
+  },
   "dependencies": {
     "@types/history": "^4.7.2",
     "@types/jest": "24.0.15",
