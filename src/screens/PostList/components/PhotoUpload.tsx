@@ -9,11 +9,12 @@ interface imageFormObjInterface{
 }
 
 export interface Error {
-  type: "FileTypeError" | "FileSizeError" | "NoFileSelectedError" |null ;
+  type: "FileTypeError" | "FileSizeError" | "NoFileSelectedError" | null ;
   description: string;
 }
 interface StateProps {
   selectedFile: File | null,
+  selectedFileName: string,
   imagePreviewUrl: string | '',
   error: Error
 }
@@ -22,12 +23,14 @@ interface Props {
   getPostListData: () => Promise<any>; 
 }
 
+
 class UploadPhoto extends React.Component<Props, StateProps> {
   constructor(props: any) {
     super(props);
     this.state = {
       selectedFile: null,
       imagePreviewUrl: '',
+      selectedFileName: '',
       error: {
         type: null,
         description: ''
@@ -39,18 +42,22 @@ class UploadPhoto extends React.Component<Props, StateProps> {
       const file = event.target.files[0];
       const acceptedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
       const maxImageSize = 336790;
-      const imagePreview = URL.createObjectURL(event.target.files[0])
+      let imagePreview = '';
+      if(file) {
+        imagePreview = URL.createObjectURL(event.target.files[0])
+      }
+
       let error = {
         type: null,
         description: ''
       } as Error
 
-      if (!acceptedFileTypes.includes(file.type)) {
+      if (file && !acceptedFileTypes.includes(file.type)) {
         error = {
           type: "FileTypeError",
           description: "This file type is not supported. Please upload either a PNG or JPG.",
         };
-      } else if (file.size > maxImageSize) {
+      } else if (file && file.size > maxImageSize) {
         error = {
           type: "FileSizeError",
           description: "Your file cannot be larger than 4MB. Please upload a smaller file.",
@@ -101,7 +108,7 @@ class UploadPhoto extends React.Component<Props, StateProps> {
           .then((response) => {
             console.log(response.data.imageUrl)
             if(response.data) {
-              this.setState( {
+              this.setState({
                 imagePreviewUrl: '',
               }, () => this.props.getPostListData())
             }      
@@ -139,15 +146,13 @@ class UploadPhoto extends React.Component<Props, StateProps> {
         }
        
 		return(
-      <div style={{margin: 'auto', width: '20%'}}> 
-        {/* { this.state.selectedFile === null ? <h4>Please upload a file...........</h4> : null} */}
-
+      <div style={{margin: 'auto', width: '20%', textAlign: "center"}}> 
         {errorMsg}
-        <label>Upload your file</label>
+        <label htmlFor="upload-photo-id">Upload your file</label>
         {imagePreview}
-        <input type="file" id="upload-photo-id" accept="image/*" onChange={this.uploadPhoto}/>
+        <input type="file" id="upload-photo-id" accept="image/*" onChange={this.uploadPhoto} name="No"/>
         
-        <button type="button" name="upload-photo" onClick={this.onClickHandler}>Upload</button> 
+        <button type="button" className="upload-button" name="upload-photo" onClick={this.onClickHandler}>Upload</button> 
 
        
       </div>
@@ -157,15 +162,3 @@ class UploadPhoto extends React.Component<Props, StateProps> {
 
 
 export default UploadPhoto;
-
-
-/* 
-https://console.aws.amazon.com/s3/buckets/upload-img-node/?region=us-east-2&tab=overview
-bucket-name = upload-img-node/
-region=us-east-2
-
-Access Key ID:
-AKIAIVLMXTULJ2HJYJBQ
-Secret Access Key:
-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
-*/

@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)
 
-Image uploading app made with React, Redux, Redux-thunk, Node, Mongoose, Typescript. Used AWS S3 to store images.
+**Image uploading app made with React, Redux, Redux-thunk, Node, Mongoose, Typescript. Used AWS S3 to store images.**
 
 **Inspiration:**
 
@@ -9,8 +9,32 @@ This app is inspired from wesbos [redux tutorials](https://learnredux.com/) whic
 ## Features:
 - Sign-up & login
 - Upload pics you love!
+- Maintaing user session when user refreshes the page
 - Share your post url to receive comments and likes ❤
 
+### The Login Page
+
+- On laptop
+
+![](./screenshots/login-page.png)
+
+### The Registration Page
+
+- On laptop
+
+![](./screenshots/registration-page.png)
+
+### The Home page
+
+![](./screenshots/home-page.png)
+
+### Single Post upon clicking
+
+![](./screenshots/single-post.png)
+
+### Image Preview before uploading
+
+![](./screenshots/preview-image.png)
 
 ## Technologies used:
 
