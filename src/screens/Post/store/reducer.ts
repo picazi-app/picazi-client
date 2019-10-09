@@ -1,5 +1,4 @@
 import { PostInfoScreenProps} from './types';
-import Comments from '../components/Comments';
 
 export const defaultPostInfoScreenProps: PostInfoScreenProps = {
   postInfo: {
@@ -38,24 +37,17 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
       }
     case 'SAVE_COMMENTS':
       //return the new state with new comment
-      const commentsToAddTo = state.postInfo.comments;
-      console.log(action.data);
       const comments = action.data;
      
       return {
         ...state,
         postInfo: {
           post: state.postInfo.post,
-          // comments: commentsToAddTo.concat({
-          //   username: action.data.username,
-          //   text: action.data.text
-          // })
           comments:comments
         } 
       };
 
     case 'REMOVE_COMMENT':
-      // const commentsToRemoveFrom = state.postInfo.comments;
       return {
         ...state,
         postInfo: {
@@ -63,21 +55,6 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
           comments: action.data.comments
         } 
       };
-    // case 'VIEW_PHOTO':
-    //   const post = state.postInfo.post;
-    //   return {
-    //     ...state,
-    //     postInfo: {
-    //       post: {
-    //         _id: action.post._id,
-    //         caption: action.post.caption,
-    //         likes: action.post.likes,
-    //         display_src: action.post.display_src,
-    //         totalComments: action.post.totalComments
-    //       },
-    //       comments: state.postInfo.comments
-    //     }
-    //   }
     case 'GET_PHOTO':
       return {
         ...state,
@@ -92,11 +69,6 @@ export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenP
         comments: state.postInfo.comments
         }
     }
-    // case 'GET_PHOTO_FAILURE':
-    //   return {
-    //     ...state,
-    //     status: action.status
-    //   }
     default:
     return state;
   }

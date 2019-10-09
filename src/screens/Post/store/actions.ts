@@ -1,9 +1,7 @@
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
-import { Post } from './types'
 import { UserActionTypes } from '../../../store/action';
-import { Comment } from './types'
-const apiUrl = `${getBaseUrl()}`;
+const apiUrl = getBaseUrl();
 
 
 export enum ActionTypes {
@@ -23,19 +21,6 @@ export enum ActionTypes {
 
   POSTINFO_INCREMENT_LIKES = "POSTINFO_INCREMENT_LIKES"
 }
-
-// export interface AddCommentAction {
-//   type: ActionTypes.ADD_COMMENT,
-//   postId: string,
-//   author: string,
-//   comment: string
-// }
-export interface RemoveCommentAction {
-  type: ActionTypes.REMOVE_COMMENT,
-  postId: string
-  index: number
-}
-
 
 function success(actionType: any, data: any) {
   return {
@@ -93,9 +78,6 @@ export function getPhoto(postId: string) {
         return dispatch(success(ActionTypes.GET_PHOTO, response.data.post))
       })
       .catch((err)=> {
-        // let err = error.response ? error.response.data.err : error.message;
-        console.log(err.response)
-        // return dispatch(error(ActionTypes.GET_PHOTO_FAILURE, err))
         if(err.response){
           return dispatch(error(UserActionTypes.NOT_FOUND_ERROR, err.response))
         }
@@ -107,7 +89,6 @@ export function incrementLikes(postId: string, likes: number) {
   return (dispatch: any) => {
     return axios.patch(`${apiUrl}/posts/${postId}/likes`, {postId, likes},  {withCredentials: true})
       .then((response) => {
-        console.log(response.data)
         dispatch(success(ActionTypes.POSTINFO_INCREMENT_LIKES, response.data.post))
       })
       .catch((err) => {
@@ -125,7 +106,6 @@ export function removeComment(postId: string, commentId: string) {
       .catch(err=> {
         console.log(err.response);
         if(err.response) {
-            console.log(err);
           return dispatch(error(UserActionTypes.NOT_FOUND_ERROR, err.response))
         }
       });
@@ -137,23 +117,10 @@ export function removeSinglePost(postId: string) {
     return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
       .then(response => {
         console.log(response.data)
-        // dispatch(success(ActionTypes.FETCH_COMMENTS, response.data.comments))
       })
       .catch(err=> {
         console.log(err.response);
-        // if(err.response) {
-        //     console.log(err);
-        //   // return dispatch(error(UserActionTypes.NOT_FOUND_ERROR, err.response))
-        // }
       });
   };
 }
 
-// Redirect people to http://localhost:3000/view/BAcJeJrQca9 if they come from http://localhost:3000/ page. 
-// export function viewPhoto(post: Post) : ViewPhoto{
-//   console.log(post)
-//   return {
-//     type: ActionTypes.VIEW_PHOTO,
-//     post: post
-//   }
-// }

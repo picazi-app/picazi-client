@@ -18,6 +18,7 @@ class Photo extends React.Component<PhotoProps> {
 
 	render(){
     const { post } = this.props;
+    console.log(this.props)
 		return(
 			<figure className="grid-figure">
 				<div className="grid-photo-wrap">

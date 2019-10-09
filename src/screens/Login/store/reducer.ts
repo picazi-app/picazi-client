@@ -1,6 +1,5 @@
 import { LoginFormProps } from './types'
 import { deleteSession } from '../../../helpers/session';
-import { success } from '../../Register/store/actions';
 
 export const defaultLoginFormProps: LoginFormProps = {
   formErrors: {},

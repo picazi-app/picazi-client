@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
-const apiUrl = `${getBaseUrl()}`
+const apiUrl = getBaseUrl()
 
 interface imageFormObjInterface{
   imageName?: string;
@@ -38,7 +38,6 @@ class UploadPhoto extends React.Component<Props, StateProps> {
     }
   }
   uploadPhoto = (event: any) => {
-      const { imagePreviewUrl } = this.state;
       const file = event.target.files[0];
       const acceptedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
       const maxImageSize = 336790;
@@ -81,12 +80,6 @@ class UploadPhoto extends React.Component<Props, StateProps> {
   onClickHandler = (e: any) => {
       let imageFormObj = new FormData();
       const { error, selectedFile} = this.state;
-      console.log(selectedFile)
-      console.log(error);
-      let noFileSelectedError = {
-        type: null,
-        description: ''
-      } as Error
       if(selectedFile === null) {
         this.setState({
           error: {
@@ -127,10 +120,10 @@ class UploadPhoto extends React.Component<Props, StateProps> {
            
   }
 	render(){  
-      const { imagePreviewUrl, error } = this.state; 
+      const { imagePreviewUrl, error} = this.state; 
       let imagePreview, errorMsg;
         if (imagePreviewUrl) {
-          imagePreview = (<img  src={imagePreviewUrl} />);
+          imagePreview = (<img  alt="" src={imagePreviewUrl} />);
         } else {
           imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
         }
@@ -147,7 +140,7 @@ class UploadPhoto extends React.Component<Props, StateProps> {
        
 		return(
       <div style={{margin: 'auto', width: '20%', textAlign: "center"}}> 
-        {errorMsg}
+        <div style={{color:'red'}}>{errorMsg}</div>
         <label htmlFor="upload-photo-id">Upload your file</label>
         {imagePreview}
         <input type="file" id="upload-photo-id" accept="image/*" onChange={this.uploadPhoto} name="No"/>

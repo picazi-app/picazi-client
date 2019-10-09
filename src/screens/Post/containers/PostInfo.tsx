@@ -2,8 +2,6 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Photo from '../../../components/Photo';
 import Comments from '../components/Comments';
-import { Post } from '../../Post/store/types';
-import { Comment } from '../store/types'
 import { connect  } from 'react-redux';
 import { StateProps } from '../../../store/types';
 import { PostInfoScreenProps } from "../store/types";
@@ -49,7 +47,11 @@ class PostInfoContainer extends React.Component<Props>{
       <>
       { 
         <div className="single-photo">
-          <Photo post={postInfo.post} incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)} {...this.props}/>
+          <Photo post={postInfo.post} 
+            incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)} 
+            {...this.props} 
+            removeSinglePost={() => this.props.removeSinglePost(postInfo.post._id)}
+            />
           <Comments postComments={postComments} {...this.props}/>
         </div>
       }
@@ -61,7 +63,6 @@ class PostInfoContainer extends React.Component<Props>{
 function mapStateToProps(state: StateProps, { location }: RouteComponentProps ){
   return {
     ...getPostInfoStateProps(state),
-    // ...getAppErrorsStateProps(state)
     status: getAppErrorsStateProps(state).status
   }
 }

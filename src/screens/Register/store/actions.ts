@@ -1,8 +1,8 @@
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
 import { history } from '../../../helpers/history'
-// URL
-const apiUrl = `${getBaseUrl()}/users`;
+
+const apiUrl = getBaseUrl();
 
 export enum UserActionTypes {
   REGISTER_REQUEST = "REGISTER_REQUEST",
@@ -22,27 +22,7 @@ export enum UserActionTypes {
 
   LOGOUT= "LOGOUT"
 }
-export interface RegSuccessReturnType {
-  type: UserActionTypes.REGISTER_SUCCESS;
-  msg: string;
-}
 
-export interface RegFailureReturnType {
-  type: UserActionTypes.REGISTER_FAILURE;
-  msg: string;
-}
-
-export interface RegRequestReturnType {
-  type: UserActionTypes.REGISTER_REQUEST;
-  msg: string;
-}
-
-// export interface CheckEmailExist {
-//   type: UserActionTypes.CHECK_EMAIL_EXIST,
-//   emailExists: boolean
-// }
-
-export type UserActions = RegSuccessReturnType | RegFailureReturnType | RegRequestReturnType;
 export interface User {
   firstName: string;
   username: string;
@@ -66,9 +46,8 @@ export const error = (actionType: any, msg: string) => {
 
 export function register(user: User) {
   return (dispatch: any) => {
-    return axios.post(`${apiUrl}/email/register`, {...user})
+    return axios.post(`${apiUrl}/users/email/register`, {...user})
       .then(response => {
-        // console.log(response);
         dispatch(success(UserActionTypes.REGISTER_SUCCESS, response.data.msg));
         if(response.status === 200) {
           history.push('/login')
@@ -81,22 +60,13 @@ export function register(user: User) {
   };
 }
 
-// export const checkEmailExist =  (actionType: any, emailExists: boolean) : CheckEmailExist => {
-//   return {
-//     type: actionType,
-//     emailExists: emailExists
-//   }
-// }
-
 export const doesEmailExist =  (email: string) => {
     return (dispatch: any) => {
-      return axios.post(`${apiUrl}/email/check`, {email})
+      return axios.post(`${apiUrl}/users/email/check`, {email})
         .then(response => {
           dispatch(success(UserActionTypes.EMAIL_DOES_NOT_EXIST, response.data.message))
         })
         .catch(err => {
-          // throw(error);
-          console.log(err.response)
           dispatch(error(UserActionTypes.EMAIL_EXISTS, err.response.data.message))
         });
     };
@@ -104,12 +74,11 @@ export const doesEmailExist =  (email: string) => {
 
 export const doesUserNameExist = (username: string) => {
   return (dispatch: any) => {
-    return axios.post(`${apiUrl}/username/check`, {username})
+    return axios.post(`${apiUrl}/users/username/check`, {username})
       .then(response => {
           dispatch(success(UserActionTypes.USERNAME_DOES_NOT_EXIST, response.data.message))
       })
       .catch((err) => {
-        console.log(err.response)
         if(err.response) {
           dispatch(error(UserActionTypes.USERNAME_EXISTS, err.response.data.message))
         }

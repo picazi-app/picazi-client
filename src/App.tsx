@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import {
   Route,
   Switch,
-  Link,
   RouteComponentProps,
-  Router,
-  Redirect,
   RouteProps,
 } from "react-router-dom";
 
@@ -16,10 +13,7 @@ import LoginPage from './screens/Login/components/LoginPage'
 import RegisterPage from './screens/Register/containers/RegisterPage';
 import { getSessionStateProps, getAppErrorsStateProps } from "./store/selector";
 import { StateProps } from './store/types';
-// import { fetchUserProfile } from './screens/UserProfile/store/
-import { getUserSession} from './helpers/session';
 import { saveUserSession } from './store/action';
-import { ProtectedRoute, AuthRoute} from './helpers/routes';
 import  Header from './components/Header';
 import { logout } from './store/action'
 import GenericNotFound from './components/GenericNotFound'

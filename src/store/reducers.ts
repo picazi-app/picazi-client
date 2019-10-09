@@ -44,7 +44,6 @@ export function userSessionReducers(state: UserSession = defaultUserSessionProps
 export function appErrors(state: AppErrors= defaultAppError, action: any): AppErrors {
   switch(action.type) {
     case 'NOT_FOUND_ERROR':
-      console.log("action.data inside appErrors: ", action.data.data)
       return {
         status: action.data.status
       };

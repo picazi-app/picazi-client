@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../../../App.css';
-// import {isEmailAvailable} from '../../../helpers/api';
 import { doesEmailExist, doesUserNameExist } from '../store/actions';
 import {register, User} from '../store/actions';
 import { 
@@ -15,7 +14,6 @@ import {
 } from '../../../helpers/formValidations';
 import { UserFieldInfo, FormErrors } from "../store/types"; 
 import { StateProps } from '../../../store/types';
-//import selectors
 import { getRegistrationStateProps } from '../store/selectors';
 import { getSessionStateProps } from '../../../store/selector'
 import RegistrationForm from '../components/RegistrationForm'
@@ -102,7 +100,7 @@ class RegisterPage extends React.Component<Props, StateType> {
     }
 
     handlePassword = () => {
-      const { password, confirmPass } = this.state.user;
+      const { password} = this.state.user;
       const { formErrors } = this.state;
 
       const passError = validatePassword(password)
@@ -184,7 +182,6 @@ class RegisterPage extends React.Component<Props, StateType> {
       const { user, formErrors } = this.state;
       const { emailExists, usernameExists } = this.props;
       const errors = validateForm(user);
-      console.log(errors)
       if((Object.entries(errors).length === 0 && errors.constructor === Object) && emailExists === false && usernameExists === false) {
         this.props.register({
           firstName: user.firstName,
@@ -195,7 +192,6 @@ class RegisterPage extends React.Component<Props, StateType> {
         this.clear();
       }
       else if(emailExists === true) {
-        console.log("errors inside second if", errors)
         this.setState({
           formErrors: {
             ...formErrors,
@@ -212,7 +208,6 @@ class RegisterPage extends React.Component<Props, StateType> {
         });
       }
       else if(errors) {
-        console.log(errors)
         this.setState({
           formErrors: {
             ...errors,

@@ -1,9 +1,9 @@
 import React from 'react';
 import '../../../App.css';
-import { Link, withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
+import { RouteComponentProps, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {LoginFormStatus, LoginFormProps, FormErrors, LoginUserFieldInfo} from '../store/types';
-import { validateEmail, validatePassword, validateForm } from '../../../helpers/formValidations';
+import {FormErrors, LoginUserFieldInfo} from '../store/types';
+import { validateEmail, validatePassword } from '../../../helpers/formValidations';
 import { StateProps } from '../../../store/types';
 import { getSessionStateProps } from '../../../store/selector'
 import { login } from '../store/action';
@@ -24,25 +24,16 @@ interface ActionProps {
 type Props = DataProps & ActionProps & RouteComponentProps;
 
 class LoginPage extends React.Component<Props, LoginStateType> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      user: {
-        email: '',
-        password: ''
-      },
-      formErrors: {}
+    constructor(props: Props) {
+      super(props);
+      this.state = {
+        user: {
+          email: '',
+          password: ''
+        },
+        formErrors: {}
+      }
     }
-  }
-
-    // componentDidUpdate(prevProps: Props) {
-    //   const {status, history } = this.props;
-    //   if(prevProps.status !== status) {
-    //     if(status.success) {
-    //       history.push("/");
-    //     }
-    //   }
-    // }
    
     handleChange = (event: any) => {
       const { name, value } = event.target;
@@ -95,7 +86,6 @@ class LoginPage extends React.Component<Props, LoginStateType> {
       }
     }
     handleSubmit = () => {
-      const { user } = this.state;
       const { email, password} = this.state.user;
       const { formErrors } = this.state;
       const emailError = validateEmail(email);
@@ -143,14 +133,6 @@ class LoginPage extends React.Component<Props, LoginStateType> {
             <div>  
               {loginForm}
             </div>
-          //   <LoginForm 
-          //   handleChange={this.handleChange} 
-          //   handleSubmit={this.handleSubmit} 
-          //   formErrors={formErrors} 
-          //   handleEmail={this.handleEmail}
-          //   handlePassword={this.handlePassword}
-          //   failure={failure}
-          // />
         );
     }
 }
