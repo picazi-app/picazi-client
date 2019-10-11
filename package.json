@@ -41,7 +41,8 @@
     "style-loader": "^0.23.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "npm-run-all": "^4.1.5"
   },
   "scripts": {
     "build-css": "stylus -c src/static/stylus/ --out src/static/css",
@@ -49,9 +50,8 @@
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
-    "npm-run-all": "^4.1.5",
     "build": "npm-run-all build-css build-js",
-    "prod":"node server.js",
+    "prod": "node server.js",
     "heroku-postbuild": "npm install && npm run build"
   },
   "proxy": "http://localhost:4000",
