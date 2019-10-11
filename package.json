@@ -51,7 +51,7 @@
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "prod":"node server.js",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm install && npm run build"
   },
   "proxy": "http://localhost:4000",
   "eslintConfig": {
