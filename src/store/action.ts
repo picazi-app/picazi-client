@@ -37,6 +37,7 @@ export function logout() {
   };
 }
 export function saveUserSession() {
+  console.log(apiUrl)
   return (dispatch: any) => {
     dispatch(success(UserActionTypes.FETCH_USER_SESSION, ''));
     return axios.get(`${apiUrl}/api/session/saveSession`, {withCredentials: true})

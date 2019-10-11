@@ -1,7 +1,7 @@
 import axios from 'axios';
 import getBaseUrl from "./config";
 
-const apiUrl = `${getBaseUrl()}`;
+const apiUrl = getBaseUrl();
 
 export function isEmailAvailable(email: string) :Promise<any> {
   return axios({
