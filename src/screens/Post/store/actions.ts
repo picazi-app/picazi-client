@@ -3,6 +3,7 @@ import getBaseUrl from "../../../helpers/config";
 import { UserActionTypes } from '../../../store/action';
 const apiUrl = getBaseUrl();
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+console.log("process.env.REACT_APP_PRODUCTION_BACKEND_BASE_URL", process.env.REACT_APP_PRODUCTION_BACKEND_BASE_URL);
 console.log("apiUrl", apiUrl);
 
 
