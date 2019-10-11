@@ -40,7 +40,7 @@ class UploadPhoto extends React.Component<Props, StateProps> {
   uploadPhoto = (event: any) => {
       const file = event.target.files[0];
       const acceptedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
-      const maxImageSize = 336790;
+      const maxImageSize = 600000;
       let imagePreview = '';
       if(file) {
         imagePreview = URL.createObjectURL(event.target.files[0])
@@ -141,11 +141,13 @@ class UploadPhoto extends React.Component<Props, StateProps> {
 		return(
       <div style={{margin: 'auto', width: '20%', textAlign: "center"}}> 
         <div style={{color:'red'}}>{errorMsg}</div>
-        <label htmlFor="upload-photo-id">Upload your file</label>
-        {imagePreview}
-        <input type="file" id="upload-photo-id" accept="image/*" onChange={this.uploadPhoto} name="No"/>
+        <div>
+          <label htmlFor="upload-photo-id" className="upload-file">Select a picture here</label>
+          {imagePreview}
+          <input type="file" id="upload-photo-id" accept="image/*" onChange={this.uploadPhoto} name="No"/>
+        </div>
         
-        <button type="button" className="upload-button" name="upload-photo" onClick={this.onClickHandler}>Upload</button> 
+        <button type="button" className="upload-button" name="upload-photo" onClick={this.onClickHandler}>Post</button> 
 
        
       </div>
