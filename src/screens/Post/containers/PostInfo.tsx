@@ -10,6 +10,7 @@ import { getPhoto } from '../store/actions'
 import { fetchComments } from '../store/actions';
 import {getAppErrorsStateProps} from '../../../store/selector'
 import { incrementLikes, saveComment, removeComment, removeSinglePost } from '../store/actions';
+import { Link } from 'react-router-dom';
 interface MatchParams {
   postId: string
 }
@@ -45,7 +46,7 @@ class PostInfoContainer extends React.Component<Props>{
     
 		return(
       <>
-      { 
+      {   
         <div className="single-photo">
           <Photo post={postInfo.post} 
             incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)} 
