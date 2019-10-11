@@ -42,7 +42,14 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "typescript": "3.5.3",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "@types/node": "^12.6.8",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.5",
+    "@types/react-redux": "^7.1.4",
+    "@types/react-router-dom": "^4.3.4",
+    "@types/redux-devtools-extension": "^2.13.2",
+    "css-loader": "^3.1.0"
   },
   "scripts": {
     "build-css": "stylus -c src/static/stylus/ --out src/static/css",
@@ -52,7 +59,7 @@
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "prod": "node server.js",
-    "heroku-postbuild": "npm install && npm run build"
+    "heroku-postbuild": "npm install && npm run build && npm run prod"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -68,14 +75,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/node": "^12.6.8",
-    "@types/react": "^16.8.23",
-    "@types/react-dom": "^16.8.5",
-    "@types/react-redux": "^7.1.4",
-    "@types/react-router-dom": "^4.3.4",
-    "@types/redux-devtools-extension": "^2.13.2",
-    "css-loader": "^3.1.0"
   }
 }

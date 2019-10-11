@@ -109,7 +109,7 @@ class UploadPhoto extends React.Component<Props, StateProps> {
           .catch((err) => {
             console.log(err.response)
             this.setState({
-              error: err.response.data.errors[0].detail
+              error: err.response.data
             })
         })     
       } else {
