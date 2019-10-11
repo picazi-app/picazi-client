@@ -2,6 +2,8 @@ import axios from 'axios';
 import getBaseUrl from "../../../helpers/config";
 import { UserActionTypes } from '../../../store/action';
 const apiUrl = getBaseUrl();
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+console.log("apiUrl", apiUrl);
 
 
 export enum ActionTypes {
