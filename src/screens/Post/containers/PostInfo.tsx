@@ -40,7 +40,7 @@ class PostInfoContainer extends React.Component<Props>{
 	render(){
     //we're getting the value from the reducer's state which is getPostInfoStateProps()
     const { postInfo } = this.props;
-    console.log(this.props);
+   console.log("this.props", this.props)
 		//get us the post
 		const postComments = postInfo.comments || [];
     
@@ -68,7 +68,7 @@ function mapStateToProps(state: StateProps, { location }: RouteComponentProps ){
   }
 }
 
-const PostInfo = withRouter(connect(mapStateToProps, {
+const PostInfo = (connect(mapStateToProps, {
   saveComment: saveComment,
   removeComment: removeComment,
   getPhoto: getPhoto,

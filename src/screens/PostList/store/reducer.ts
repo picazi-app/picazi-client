@@ -5,6 +5,7 @@ import { PostListScreenProps } from './types';
 
 export const defaultPostListScreenProps: PostListScreenProps = {
   posts: [],
+  totalPages: 1
 }
 
 export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction) : PostListScreenProps {
@@ -28,7 +29,8 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
     case ActionTypes.GET_POSTLIST:
     return {
       ...state,
-      posts: action.data,
+      posts: action.data.posts,
+      totalPages: action.data.totalPages
 
     }		
     case ActionTypes.POSTLIST_FAILURE:

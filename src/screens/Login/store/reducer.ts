@@ -31,7 +31,6 @@ export function reducers(state: LoginFormProps = defaultLoginFormProps, action: 
         submitted: false
       }
       case 'LOGOUT':
-        deleteSession();
         return {
           ...state,
         }

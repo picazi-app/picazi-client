@@ -14,10 +14,10 @@ export interface IncrementAction {
   type: ActionTypes.INCREMENT_LIKES,
   index: number
 }
-function success(actionType: any, msg: any){
+function success(actionType: any, data: any){
     return {
       type: actionType,
-      data: msg,
+      data: data,
     };
   }
 function error(actionType: any, msg: any) {
@@ -26,11 +26,12 @@ function error(actionType: any, msg: any) {
     failure: msg
   };
 }
-export function getPostListData() {
+export function getPostListData(page: number) {
   return (dispatch: any) => {
-    return axios.get(`${apiUrl}/posts`, {withCredentials: true})
+    return axios.get(`${apiUrl}/posts?page=${page}`, {withCredentials: true})
       .then(response => {
-        dispatch(success(ActionTypes.GET_POSTLIST, response.data.posts))
+        console.log(response.data)
+        dispatch(success(ActionTypes.GET_POSTLIST, response.data))
       })
       .catch(err => {
         console.log(err)
