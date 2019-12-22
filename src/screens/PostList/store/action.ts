@@ -5,7 +5,8 @@ const apiUrl = getBaseUrl();
 // Action Types
 export enum ActionTypes {
   INCREMENT_LIKES = 'INCREMENT_LIKES',
-  GET_POSTLIST = 'GET_POSTLIST',
+  GET_POSTLIST_REQUEST = 'GET_POSTLIST_REQUEST',
+  GET_POSTLIST_SUCCESS = 'GET_POSTLIST_SUCCESS',
   POSTLIST_FAILURE= 'POSTLIST_FAILURE',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
@@ -28,10 +29,11 @@ function error(actionType: any, msg: any) {
 }
 export function getPostListData(page: number) {
   return (dispatch: any) => {
+    dispatch({type: ActionTypes.GET_POSTLIST_REQUEST});
     return axios.get(`${apiUrl}/posts?page=${page}`, {withCredentials: true})
       .then(response => {
         console.log(response.data)
-        dispatch(success(ActionTypes.GET_POSTLIST, response.data))
+        dispatch(success(ActionTypes.GET_POSTLIST_SUCCESS, response.data))
       })
       .catch(err => {
         console.log(err)
@@ -60,7 +62,7 @@ export function removeSinglePost(postId: string) {
     return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
       .then(response => {
         console.log(response.data)
-        dispatch(success(ActionTypes.GET_POSTLIST, response.data.posts))
+        dispatch(success(ActionTypes.GET_POSTLIST_SUCCESS, response.data.posts))
       })
       .catch(err=> {
         console.log(err.response);

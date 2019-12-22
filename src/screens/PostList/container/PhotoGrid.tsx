@@ -15,12 +15,14 @@ interface PhotoGridStateProps{
   posts: PostList;
   isLoggedIn: boolean;
   totalPages: number;
+  scroll: boolean;
+  // page: number;
 }
 
-// interface StateProps {
-//   currentPage: number;
-//   totalPages: number;
-// }
+interface InternalStateProps {
+  page: number;
+
+}
 interface PostGridActionProps {
   getPostListData: (page: number) => Promise<any>;
   removeSinglePost: (postId: string) => void;
@@ -35,14 +37,56 @@ function getPage (locationString: string): number {
   return page;
 }
 
-class PhotoGridContainer extends React.Component<Props> {
- 
+class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      page: 1,
+    }
+  }
   componentDidMount() {
     const { isLoggedIn, getPostListData, location } = this.props;
 
     if(isLoggedIn){
-      getPostListData(getPage(location.search))
+      //getPostListData(getPage(location.search))
+      getPostListData(this.state.page);
     }
+
+    window.addEventListener('scroll', (e) => {
+      this.handleScroll(e);
+    })
+  }
+  loadMore = () => {
+    const { getPostListData, history } = this.props;
+
+    this.setState( prevState => {
+      console.log("prevState", prevState);
+      return {
+        page: prevState.page + 1
+      };
+    }, () => getPostListData(this.state.page))
+    
+  }
+  handleScroll = (e) => {
+    const { totalPages, history, scroll } = this.props;
+    const { page } = this.state;
+
+    // if(scroll) return;
+    
+    if(totalPages <= page) return;
+
+    const figure = document.getElementsByTagName('figure');
+
+    const lastFigure = figure[figure.length - 1];
+    const lastFigOffset = lastFigure.offsetTop + lastFigure.clientHeight;
+    const pageOffset = window.pageYOffset + window.innerHeight;
+
+    var bottomOffset = 20;
+
+    if(pageOffset > lastFigOffset - bottomOffset) {
+      this.loadMore();
+    }
+
   }
   handleIncrementLikes(postId: string, likes: number) {
     this.props.incrementLikes(postId, likes);
@@ -73,17 +117,17 @@ class PhotoGridContainer extends React.Component<Props> {
             <div className="photo-grid">
               { postData }
             </div>
-            <div style={{textAlign: "center"}}>
+            {/* <div style={{textAlign: "center"}}>
               { (page > 1) &&
                 <Link to={`/posts?page=${page-1}`}>
                   <button onClick={this.pageHandler(-1)}>Prev </button>
                 </Link>
               }
              { 
-               (page< totalPages) && <Link to={`/posts?page=${page+1}`}>
+               (page < totalPages) && <Link to={`/posts?page=${page+1}`}>
                 <button onClick={this.pageHandler(1)}>Next</button>
               </Link>}
-            </div>
+            </div> */}
           </>
         }
         {!isLoggedIn && 
@@ -99,6 +143,7 @@ function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) :
   return {
     posts: getPostListStateProps(state).posts,
     totalPages: getPostListStateProps(state).totalPages,
+    scroll: getPostListStateProps(state).scroll,
     isLoggedIn: getSessionStateProps(state).isLoggedIn,
   }
 }

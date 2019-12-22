@@ -5,12 +5,14 @@ import { PostListScreenProps } from './types';
 
 export const defaultPostListScreenProps: PostListScreenProps = {
   posts: [],
-  totalPages: 1
+  totalPages: 0,
+  scroll: false,
+  // page: 1
 }
 
 export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction) : PostListScreenProps {
 	switch(action.type) {
-		case 'INCREMENT_LIKES' :
+		case ActionTypes.INCREMENT_LIKES :
       let posts = state.posts;
 
       posts = posts.map(post => {
@@ -26,18 +28,27 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
         posts: posts
         
       }
-    case ActionTypes.GET_POSTLIST:
-    return {
-      ...state,
-      posts: action.data.posts,
-      totalPages: action.data.totalPages
 
-    }		
+    case ActionTypes.GET_POSTLIST_REQUEST:
+      return {
+        ...state,
+        scroll: true
+      }
+
+    case ActionTypes.GET_POSTLIST_SUCCESS:
+      return {
+        ...state,
+        posts: [...state.posts, ...action.data.posts],
+        totalPages: action.data.totalPages,
+        scroll: false,
+    }
+
     case ActionTypes.POSTLIST_FAILURE:
-    return {
-      ...state,
-      posts: [],
-    }			
+      return {
+        ...state,
+        posts: [],
+      }
+
     default:
       return state;
 	}
