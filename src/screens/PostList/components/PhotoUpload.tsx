@@ -20,7 +20,7 @@ interface StateProps {
 }
 
 interface Props {
-  getPostListData: () => Promise<any>; 
+  getPostListData: (page: number) => Promise<any>; 
 }
 
 
@@ -103,13 +103,13 @@ class UploadPhoto extends React.Component<Props, StateProps> {
             if(response.data) {
               this.setState({
                 imagePreviewUrl: '',
-              }, () => this.props.getPostListData())
+              }, () => this.props.getPostListData(1))
             }      
           })
           .catch((err) => {
             console.log(err.response)
             this.setState({
-              error: err.response.data.errors[0].detail
+              error: err.response.data
             })
         })     
       } else {

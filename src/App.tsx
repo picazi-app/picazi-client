@@ -3,6 +3,7 @@ import PostInfo from './screens/Post/containers/PostInfo';
 import PhotoGrid from './screens/PostList/container/PhotoGrid';
 import { connect } from 'react-redux';
 import {
+  Redirect,
   Route,
   Switch,
   RouteComponentProps,
@@ -65,8 +66,9 @@ class App extends React.Component<Props> {
                     {/* <Route exact path="/" component={() =>(
                     <PhotoGrid {...this.props}/>
                     )}/> */}
-                    <Route exact={true} path="/" component={ PhotoGrid} />
-                    <Route exact={true} path="/posts" component={ PhotoGrid} />
+                    {/* <Route exact={true} path="/" component={ PhotoGrid } /> */}
+                    <Redirect from="/" to = "/posts?page=1" exact />
+                    <Route exact={true} path="/posts/" component={ PhotoGrid} />
                      <Route path="/view/:postId" component={PostInfo}/>     
                       
                   
@@ -84,6 +86,7 @@ class App extends React.Component<Props> {
 }
 
 function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) : AppStateProps {
+
   return {
     isLoading: getSessionStateProps(state).isLoading,
     isLoggedIn: getSessionStateProps(state).isLoggedIn,

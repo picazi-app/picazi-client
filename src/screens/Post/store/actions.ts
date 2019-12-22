@@ -3,7 +3,6 @@ import getBaseUrl from "../../../helpers/config";
 import { UserActionTypes } from '../../../store/action';
 const apiUrl = getBaseUrl();
 
-
 export enum ActionTypes {
   SAVE_COMMENTS = "SAVE_COMMENTS",
   SAVE_COMMENTS_FAILURE="SAVE_COMMENTS_FAILURE",
