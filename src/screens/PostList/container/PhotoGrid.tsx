@@ -9,7 +9,6 @@ import { getPostListData, incrementLikes } from '../store/action'
 import { getSessionStateProps } from '../../../store/selector'
 import PhotoUpload from '../components/PhotoUpload'
 import { removeSinglePost } from '../store/action'
-import queryString from 'querystring';
 
 interface PhotoGridStateProps{
   posts: PostList;
@@ -31,14 +30,14 @@ interface PostGridActionProps {
 
 type Props = PhotoGridStateProps & PostGridActionProps & RouteComponentProps;
 
-function getPage (locationString: string): number {
-  const queryParams = new URLSearchParams(locationString);
-  const page = queryParams && parseInt(queryParams.get('page')) || 1;
-  return page;
-}
+// function getPage (locationString: string): number {
+//   const queryParams = new URLSearchParams(locationString);
+//   const page = queryParams && parseInt(queryParams.get('page')) || 1;
+//   return page;
+// }
 
 class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       page: 1,
@@ -67,7 +66,7 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
     }, () => getPostListData(this.state.page))
     
   }
-  handleScroll = (e) => {
+  handleScroll = (e:any) => {
     const { totalPages, history, scroll } = this.props;
     const { page } = this.state;
 
@@ -78,13 +77,16 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
     const figure = document.getElementsByTagName('figure');
 
     const lastFigure = figure[figure.length - 1];
-    const lastFigOffset = lastFigure.offsetTop + lastFigure.clientHeight;
-    const pageOffset = window.pageYOffset + window.innerHeight;
+    if(lastFigure) {
+      const lastFigOffset = lastFigure.offsetTop + lastFigure.clientHeight;
+      const pageOffset = window.pageYOffset + window.innerHeight;
+  
+      var bottomOffset = 20;
+  
+      if(pageOffset > lastFigOffset - bottomOffset) {
+        this.loadMore();
+      }
 
-    var bottomOffset = 20;
-
-    if(pageOffset > lastFigOffset - bottomOffset) {
-      this.loadMore();
     }
 
   }
@@ -94,13 +96,13 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
   handleClickRemovePost(postId: string) {
     this.props.removeSinglePost(postId);
   }
-  pageHandler = (pageNumber: number) => () => {
-    const { location, getPostListData } = this.props;
-    getPostListData(getPage(location.search) + pageNumber);
-  }
+//   pageHandler = (pageNumber: number) => () => {
+//     const { location, getPostListData } = this.props;
+//     getPostListData(getPage(location.search) + pageNumber);
+//   }
 	render(){
     const { posts, isLoggedIn, getPostListData, history, totalPages  } = this.props;
-    const page = getPage(history.location.search);
+    // const page = getPage(history.location.search);
 
     const postData = posts ? posts.map((post, i)=> 
       {

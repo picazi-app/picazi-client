@@ -34,8 +34,8 @@ class Registration extends React.Component<Props> {
     return (
       <>
             <div>
-            <h2 style={{textAlign: "center"}}>New User? Register here!</h2>
             <div className="center-form">
+              <h2 style={{textAlign: "center"}}>New User? Register here!</h2>
               <div className="form-group">
                 <label htmlFor="firstName">First Name</label>
                 <input  

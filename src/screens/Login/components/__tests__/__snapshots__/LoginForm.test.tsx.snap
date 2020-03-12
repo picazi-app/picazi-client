@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login component should Login when credential exists in the database render loginform successfully 1`] = `
+<Fragment>
+  <h2
+    style={
+      Object {
+        "textAlign": "center",
+      }
+    }
+  >
+    Existing User? Login here
+  </h2>
+  <div
+    className="center-form"
+  >
+    <h3
+      style={
+        Object {
+          "color": "red",
+        }
+      }
+    />
+    <div
+      className="form-group"
+    >
+      <label>
+        Enter your email
+      </label>
+      <input
+        className="form-control"
+        name="email"
+        onBlur={[Function]}
+        onChange={[Function]}
+        type="email"
+      />
+      <div>
+         
+         
+      </div>
+    </div>
+    <div
+      className="form-group"
+    >
+      <label>
+        Enter your password
+      </label>
+      <input
+        className="form-control"
+        name="password"
+        onBlur={[Function]}
+        onChange={[Function]}
+        type="password"
+      />
+      <div>
+         
+         
+      </div>
+    </div>
+    <div
+      className="form-group"
+    >
+      <button
+        className="btn btn-primary"
+        onClick={[Function]}
+      >
+        Login
+      </button>
+      <Link
+        className="btn btn-link"
+        to="/signup"
+      >
+        Register
+      </Link>
+    </div>
+  </div>
+</Fragment>
+`;

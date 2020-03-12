@@ -44,6 +44,7 @@ class App extends React.Component<Props> {
 
 	render(){
     const { isLoading, isLoggedIn, logout, history, status } = this.props;
+    
     const url = history.location.pathname;
 		return(
 			<div>
@@ -56,13 +57,13 @@ class App extends React.Component<Props> {
                 <>
                   <Header
                     isLoggedIn={isLoggedIn}
-                    title="Reduxstagram"
+                    title="Picazi"
                     logout={logout} 
                     logoutRedirectUrl={url}
                   />
                   <Switch>                     
                     <Route path="/login" component={LoginPage}/>
-                    <Route path="/signup" component={() => (<RegisterPage {...this.props} />)} />
+                    <Route path="/signup" component={() => (<RegisterPage  />)} />
                     {/* <Route exact path="/" component={() =>(
                     <PhotoGrid {...this.props}/>
                     )}/> */}

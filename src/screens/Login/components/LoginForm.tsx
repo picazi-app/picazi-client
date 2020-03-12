@@ -12,14 +12,18 @@ interface Props {
   failure: string | undefined;
 }
 
-class LoginForm extends React.Component<Props> {   
+class LoginForm extends React.Component<Props> {
+  myClickFunc = () => {
+    console.log('clickity clickcty')
+  }  
     render() {     
       const { formErrors, handleChange, handleEmail, handlePassword, handleSubmit, failure } = this.props;    
       const loginError = failure? failure : null;
         return (
           <>
-            <h2 style={{textAlign: "center"}}>Existing User? Login here</h2>
+            
             <div className="center-form">
+              <h2 style={{textAlign: "center"}}>Existing User? Login here</h2>
               <h3 style={{color:"red"}}>{loginError}</h3>
               <div className="form-group">
                 <label>Enter your email</label>
@@ -29,6 +33,7 @@ class LoginForm extends React.Component<Props> {
                     name="email"
                     onBlur={handleEmail}
                     onChange={handleChange} 
+                    contentEditable={true}
                 >
                 </input>
                 <div> {formErrors ? formErrors.email : null} </div>
@@ -47,7 +52,7 @@ class LoginForm extends React.Component<Props> {
               </div>
               <div className="form-group">
                   <button className="btn btn-primary"  onClick={handleSubmit}>Login</button>
-                  <Link to="/signup" className="btn btn-link">Register</Link> 
+                  <Link to="/signup" className="btn btn-link" style={{display: "block"}}>Click here to register a new account</Link> 
               </div>
             </div>
           </>

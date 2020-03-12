@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getBaseUrl from "../../../helpers/config";
+import getBaseUrl from "../../../helpers/config.js";
 const apiUrl = getBaseUrl();
 
 // Action Types

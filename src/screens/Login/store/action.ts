@@ -1,6 +1,6 @@
 import { LoginUserFieldInfo } from './types';
 import axios from 'axios';
-import getBaseUrl from "../../../helpers/config";
+import getBaseUrl from "../../../helpers/config.js";
 import {saveUserSession} from '../../../store/action'
 
 const apiUrl = getBaseUrl();

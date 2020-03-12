@@ -52,7 +52,7 @@ export function appErrors(state: AppErrors= defaultAppError, action: any): AppEr
   }
 }
 
-const appReducer = combineReducers({
+const rootReducer = combineReducers({
   registration_screen: registrationReducer,
   login_screen: loginReducer,
   postList_screen: postListReducer,
@@ -61,9 +61,9 @@ const appReducer = combineReducers({
   routing: routerReducer,
   app_errors: appErrors
 });
-
-const rootReducer = (state: any, action: any) => {
-  return appReducer(state, action);
-}
+console.log("appReducer is....", rootReducer)
+// const rootReducer = (state: any, action: any) => {
+//   return appReducer(state, action);
+// }
 
 export default rootReducer;

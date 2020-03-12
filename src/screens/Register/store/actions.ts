@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getBaseUrl from "../../../helpers/config";
+import getBaseUrl from "../../../helpers/config.js";
 import { history } from '../../../helpers/history'
 
 const apiUrl = getBaseUrl();

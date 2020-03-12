@@ -21,7 +21,11 @@
     "isolatedModules": true
   },
   "include": [
-    "./src/**/*.ts",
+    "./src/**/*",
     "./src/**/*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
   ]
 }

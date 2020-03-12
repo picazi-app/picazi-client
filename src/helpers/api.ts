@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getBaseUrl from "./config";
+import getBaseUrl from "./config.js";
 
 const apiUrl = getBaseUrl();
 

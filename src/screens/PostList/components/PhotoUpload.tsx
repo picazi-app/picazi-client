@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import getBaseUrl from "../../../helpers/config";
+import getBaseUrl from "../../../helpers/config.js";
 const apiUrl = getBaseUrl()
 
 interface imageFormObjInterface{
