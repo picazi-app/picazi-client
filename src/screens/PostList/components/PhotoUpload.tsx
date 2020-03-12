@@ -142,9 +142,9 @@ class UploadPhoto extends React.Component<Props, StateProps> {
       <div style={{margin: 'auto', width: '20%', textAlign: "center"}}> 
         <div style={{color:'red'}}>{errorMsg}</div>
         <div>
-          <label htmlFor="upload-photo-id" className="upload-file">Select a picture here</label>
+          <button><label htmlFor="upload-photo-id" className="upload-file">Select a picture here</label></button>
           {imagePreview}
-          <input type="file" id="upload-photo-id" accept="image/*" onChange={this.uploadPhoto} name="No"/>
+          <input type="file" id="upload-photo-id" accept="image/*" onChange={this.uploadPhoto}/>
         </div>
         
         <button type="button" className="upload-button" name="upload-photo" onClick={this.onClickHandler}>Post</button> 

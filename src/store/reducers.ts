@@ -61,7 +61,7 @@ const rootReducer = combineReducers({
   routing: routerReducer,
   app_errors: appErrors
 });
-console.log("appReducer is....", rootReducer)
+
 // const rootReducer = (state: any, action: any) => {
 //   return appReducer(state, action);
 // }

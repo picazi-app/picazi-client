@@ -36,6 +36,7 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
       }
 
     case ActionTypes.GET_POSTLIST_SUCCESS:
+      console.log(action)
       return {
         ...state,
         posts: [...state.posts, ...action.data.posts],

@@ -48,12 +48,23 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
 
     if(isLoggedIn){
       //getPostListData(getPage(location.search))
+     
       getPostListData(this.state.page);
     }
 
     window.addEventListener('scroll', (e) => {
       this.handleScroll(e);
     })
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', (e) => {
+      this.handleScroll(e);
+    })
+  }
+
+  componentDidUpdate(prevState:any, prevProps: any) {
+    console.log("prevState.....", prevState)
+    console.log("prevProps...", prevProps);
   }
   loadMore = () => {
     const { getPostListData, history } = this.props;

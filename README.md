@@ -16,25 +16,25 @@ This app is inspired from wesbos [redux tutorials](https://learnredux.com/) whic
 
 - On laptop
 
-![](./screenshots/login-page.png)
+![](./screenshots/picazi-login.png)
 
 ### The Registration Page
 
 - On laptop
 
-![](./screenshots/registration-page.png)
+![](./screenshots/picazi-signup.png)
 
 ### The Home page
 
-![](./screenshots/home-page.png)
+![](./screenshots/picazi-home.png)
 
 ### Single Post upon clicking
 
-![](./screenshots/single-post.png)
+![](./screenshots/picazi-singlePost.png)
 
 ### Image Preview before uploading
 
-![](./screenshots/preview-image.png)
+![](./screenshots/picazi-preview.png)
 
 ## Technologies used:
 

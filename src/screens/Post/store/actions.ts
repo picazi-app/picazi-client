@@ -1,6 +1,7 @@
 import axios from 'axios';
 import getBaseUrl from "../../../helpers/config.js";
 import { UserActionTypes } from '../../../store/action';
+
 const apiUrl = getBaseUrl();
 
 export enum ActionTypes {
@@ -18,7 +19,9 @@ export enum ActionTypes {
   GET_PHOTO = "GET_PHOTO",
   GET_PHOTO_FAILURE = "GET_PHOTO_FAILURE",
 
-  POSTINFO_INCREMENT_LIKES = "POSTINFO_INCREMENT_LIKES"
+  POSTINFO_INCREMENT_LIKES = "POSTINFO_INCREMENT_LIKES",
+
+  GET_POSTLIST_SUCCESS = "GET_POSTLIST_SUCCESS"
 }
 
 function success(actionType: any, data: any) {
@@ -116,6 +119,7 @@ export function removeSinglePost(postId: string) {
     return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
       .then(response => {
         console.log(response.data)
+        dispatch(success(ActionTypes.GET_POSTLIST_SUCCESS, response.data))
       })
       .catch(err=> {
         console.log(err.response);
