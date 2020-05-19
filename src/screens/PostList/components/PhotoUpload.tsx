@@ -20,7 +20,7 @@ interface StateProps {
 }
 
 interface Props {
-  getPostListData: (page: number) => Promise<any>; 
+  fetchLatestPosts: () => Promise<any>; 
 }
 
 
@@ -99,11 +99,10 @@ class UploadPhoto extends React.Component<Props, StateProps> {
           withCredentials: true
         })
           .then((response) => {
-            console.log(response.data.imageUrl)
             if(response.data) {
               this.setState({
                 imagePreviewUrl: '',
-              }, () => this.props.getPostListData(1))
+              }, () => this.props.fetchLatestPosts())
             }      
           })
           .catch((err) => {

@@ -6,18 +6,16 @@ import { PostListScreenProps } from './types';
 export const defaultPostListScreenProps: PostListScreenProps = {
   posts: [],
   totalPages: 0,
-  scroll: false,
-  // page: 1
+  loading: false,
 }
 
 export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction) : PostListScreenProps {
 	switch(action.type) {
-		case ActionTypes.INCREMENT_LIKES :
+		case ActionTypes.INCREMENT_LIKES:
       let posts = state.posts;
 
       posts = posts.map(post => {
         if (post._id === action.data._id) {
-          console.log(post)
           post.likes = action.data.likes;
         }
         return post;
@@ -29,22 +27,35 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
         
       }
 
-    case ActionTypes.GET_POSTLIST_REQUEST:
+    case ActionTypes.FETCH_POSTS_REQUEST:
       return {
         ...state,
-        scroll: true
+        loading: true
       }
 
-    case ActionTypes.GET_POSTLIST_SUCCESS:
-      console.log(action)
+    case ActionTypes.FETCH_POSTS_SUCCESS:
       return {
         ...state,
         posts: [...state.posts, ...action.data.posts],
         totalPages: action.data.totalPages,
-        scroll: false,
-    }
+        loading: false,
+      }
 
-    case ActionTypes.POSTLIST_FAILURE:
+    case ActionTypes.FETCH_LATEST_POSTS_REQUEST:
+      return {
+        ...state,
+        loading: true
+      }
+    
+    case ActionTypes.FETCH_LATEST_POSTS_SUCCESS:
+      return {
+        ...state,
+        posts: action.data.posts,
+        totalPages: action.data.totalPages,
+        loading: false,
+      }
+
+    case ActionTypes.FETCH_POSTLIST_FAILURE:
       return {
         ...state,
         posts: [],

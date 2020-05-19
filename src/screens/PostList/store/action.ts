@@ -5,11 +5,15 @@ const apiUrl = getBaseUrl();
 // Action Types
 export enum ActionTypes {
   INCREMENT_LIKES = 'INCREMENT_LIKES',
-  GET_POSTLIST_REQUEST = 'GET_POSTLIST_REQUEST',
-  GET_POSTLIST_SUCCESS = 'GET_POSTLIST_SUCCESS',
-  POSTLIST_FAILURE= 'POSTLIST_FAILURE',
-  SUCCESS = 'SUCCESS',
-  FAILURE = 'FAILURE',
+
+  FETCH_LATEST_POSTS_REQUEST = 'FETCH_LATEST_POSTS_REQUEST',
+  FETCH_LATEST_POSTS_SUCCESS = 'FETCH_LATEST_POSTS_SUCCESS',
+
+  FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST',  
+  FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS',
+
+  FETCH_POSTLIST_FAILURE= 'FETCH_POSTLIST_FAILURE',
+
 }
 export interface IncrementAction {
   type: ActionTypes.INCREMENT_LIKES,
@@ -27,18 +31,32 @@ function error(actionType: any, msg: any) {
     failure: msg
   };
 }
-export function getPostListData(page: number) {
+
+export function fetchLatestPosts() {
   return (dispatch: any) => {
-    dispatch({type: ActionTypes.GET_POSTLIST_REQUEST});
-    return axios.get(`${apiUrl}/posts?page=${page}`, {withCredentials: true})
+    dispatch({type: ActionTypes.FETCH_LATEST_POSTS_REQUEST});
+    return axios.get(`${apiUrl}/posts?page=${1}`, {withCredentials: true})
       .then(response => {
-        console.log(response.data)
-        dispatch(success(ActionTypes.GET_POSTLIST_SUCCESS, response.data))
+        dispatch(success(ActionTypes.FETCH_LATEST_POSTS_SUCCESS, response.data))
       })
       .catch(err => {
-        console.log(err)
         if(err.response) {
-          dispatch(error(ActionTypes.POSTLIST_FAILURE, err.response))
+          dispatch(error(ActionTypes.FETCH_POSTLIST_FAILURE, err.response))
+        }
+      });
+  };
+}
+
+export function fetchPosts(page: number) {
+  return (dispatch: any) => {
+    dispatch({type: ActionTypes.FETCH_POSTS_REQUEST});
+    return axios.get(`${apiUrl}/posts?page=${page}`, {withCredentials: true})
+      .then(response => {
+        dispatch(success(ActionTypes.FETCH_POSTS_SUCCESS, response.data))
+      })
+      .catch(err => {
+        if(err.response) {
+          dispatch(error(ActionTypes.FETCH_POSTLIST_FAILURE, err.response))
         }
       });
   };
@@ -48,7 +66,6 @@ export function incrementLikes(postId: string, likes: number) {
   return (dispatch: any) => {
     return axios.patch(`${apiUrl}/posts/${postId}/likes`, {postId, likes},  {withCredentials: true})
       .then((response) => {
-        console.log(response.data)
         dispatch(success(ActionTypes.INCREMENT_LIKES, response.data.post))
       })
       .catch((err) => {
@@ -61,8 +78,7 @@ export function removeSinglePost(postId: string) {
   return (dispatch: any) => {
     return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
       .then(response => {
-        console.log(response.data)
-        dispatch(success(ActionTypes.GET_POSTLIST_SUCCESS, response.data.posts))
+        dispatch(success(ActionTypes.FETCH_POSTS_SUCCESS, response.data.posts))
       })
       .catch(err=> {
         console.log(err.response);

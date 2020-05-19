@@ -5,7 +5,7 @@ import { getPostListStateProps } from "../store/selectors";
 import { StateProps } from '../../../store/types';
 import { withRouter, RouteComponentProps, Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getPostListData, incrementLikes } from '../store/action'
+import { fetchLatestPosts, fetchPosts, incrementLikes } from '../store/action'
 import { getSessionStateProps } from '../../../store/selector'
 import PhotoUpload from '../components/PhotoUpload'
 import { removeSinglePost } from '../store/action'
@@ -14,7 +14,7 @@ interface PhotoGridStateProps{
   posts: PostList;
   isLoggedIn: boolean;
   totalPages: number;
-  scroll: boolean;
+  loading: boolean;
   // page: number;
 }
 
@@ -23,18 +23,13 @@ interface InternalStateProps {
 
 }
 interface PostGridActionProps {
-  getPostListData: (page: number) => Promise<any>;
+  fetchLatestPosts: () => Promise<any>;
+  fetchPosts: (page: number) => Promise<any>;
   removeSinglePost: (postId: string) => void;
   incrementLikes: (postId: string, likes: number) => void;
 }
 
 type Props = PhotoGridStateProps & PostGridActionProps & RouteComponentProps;
-
-// function getPage (locationString: string): number {
-//   const queryParams = new URLSearchParams(locationString);
-//   const page = queryParams && parseInt(queryParams.get('page')) || 1;
-//   return page;
-// }
 
 class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
   constructor(props: Props) {
@@ -44,12 +39,10 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
     }
   }
   componentDidMount() {
-    const { isLoggedIn, getPostListData, location } = this.props;
+    const { isLoggedIn, fetchLatestPosts } = this.props;
 
     if(isLoggedIn){
-      //getPostListData(getPage(location.search))
-     
-      getPostListData(this.state.page);
+      fetchLatestPosts();
     }
 
     window.addEventListener('scroll', (e) => {
@@ -62,26 +55,20 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
     })
   }
 
-  componentDidUpdate(prevState:any, prevProps: any) {
-    console.log("prevState.....", prevState)
-    console.log("prevProps...", prevProps);
-  }
   loadMore = () => {
-    const { getPostListData, history } = this.props;
+    const { fetchPosts } = this.props;
 
     this.setState( prevState => {
-      console.log("prevState", prevState);
       return {
         page: prevState.page + 1
       };
-    }, () => getPostListData(this.state.page))
+    }, () => fetchPosts(this.state.page))
     
   }
-  handleScroll = (e:any) => {
-    const { totalPages, history, scroll } = this.props;
-    const { page } = this.state;
 
-    // if(scroll) return;
+  handleScroll = (e:any) => {
+    const { totalPages } = this.props;
+    const { page } = this.state;
     
     if(totalPages <= page) return;
 
@@ -107,14 +94,8 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
   handleClickRemovePost(postId: string) {
     this.props.removeSinglePost(postId);
   }
-//   pageHandler = (pageNumber: number) => () => {
-//     const { location, getPostListData } = this.props;
-//     getPostListData(getPage(location.search) + pageNumber);
-//   }
 	render(){
-    const { posts, isLoggedIn, getPostListData, history, totalPages  } = this.props;
-    // const page = getPage(history.location.search);
-
+    const { posts, isLoggedIn, fetchLatestPosts } = this.props;
     const postData = posts ? posts.map((post, i)=> 
       {
         return <Photo {...this.props} key={i} post={post} 
@@ -126,21 +107,10 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
       <div>
         { isLoggedIn && 
           <>
-            <PhotoUpload getPostListData={getPostListData}/>
+            <PhotoUpload fetchLatestPosts={fetchLatestPosts}/>
             <div className="photo-grid">
               { postData }
             </div>
-            {/* <div style={{textAlign: "center"}}>
-              { (page > 1) &&
-                <Link to={`/posts?page=${page-1}`}>
-                  <button onClick={this.pageHandler(-1)}>Prev </button>
-                </Link>
-              }
-             { 
-               (page < totalPages) && <Link to={`/posts?page=${page+1}`}>
-                <button onClick={this.pageHandler(1)}>Next</button>
-              </Link>}
-            </div> */}
           </>
         }
         {!isLoggedIn && 
@@ -156,13 +126,14 @@ function mapStateToProps(state: StateProps, { location}: RouteComponentProps ) :
   return {
     posts: getPostListStateProps(state).posts,
     totalPages: getPostListStateProps(state).totalPages,
-    scroll: getPostListStateProps(state).scroll,
+    loading: getPostListStateProps(state).loading,
     isLoggedIn: getSessionStateProps(state).isLoggedIn,
   }
 }
 
 const PhotoGrid = (connect(mapStateToProps, {
-  getPostListData: getPostListData,
+  fetchLatestPosts: fetchLatestPosts,
+  fetchPosts: fetchPosts,
   removeSinglePost: removeSinglePost,
   incrementLikes: incrementLikes
 })(PhotoGridContainer));
