@@ -60,6 +60,12 @@ export function posts(state: PostListScreenProps = defaultPostListScreenProps, a
         ...state,
         posts: [],
       }
+      case ActionTypes.DELETE_POST_SUCCESS:
+        return {
+          ...state,
+          posts: state.posts.filter((item, index) => item._id !== action.data.postId),
+          loading: false,
+        }
 
     default:
       return state;

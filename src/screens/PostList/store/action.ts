@@ -12,7 +12,11 @@ export enum ActionTypes {
   FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST',  
   FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS',
 
-  FETCH_POSTLIST_FAILURE= 'FETCH_POSTLIST_FAILURE',
+  FETCH_POSTLIST_FAILURE = 'FETCH_POSTLIST_FAILURE',
+
+  DELETE_POST_REQUEST = 'DELETE_POST_REQUEST',
+  DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS',
+  DELETE_POST_FAILURE = 'DELETE_POST_FAILURE',
 
 }
 export interface IncrementAction {
@@ -76,13 +80,17 @@ export function incrementLikes(postId: string, likes: number) {
 
 export function removeSinglePost(postId: string) {
   return (dispatch: any) => {
-    return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
-      .then(response => {
-        dispatch(success(ActionTypes.FETCH_POSTS_SUCCESS, response.data.posts))
-      })
-      .catch(err=> {
-        console.log(err.response);
-        
-      });
-  };
+    return new Promise((resolve, reject) => {
+      dispatch({type: ActionTypes.DELETE_POST_REQUEST});
+      return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
+        .then(response => {
+          dispatch(success(ActionTypes.DELETE_POST_SUCCESS, response.data))
+          resolve();
+        })
+        .catch(err=> {
+          dispatch(error(ActionTypes.DELETE_POST_FAILURE, err.message))
+          reject()
+        });
+    });
+  }
 }
