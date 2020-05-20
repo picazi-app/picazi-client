@@ -11,12 +11,12 @@ export const defaultPostListScreenProps: PostListScreenProps = {
 
 export function posts(state: PostListScreenProps = defaultPostListScreenProps, action: AnyAction) : PostListScreenProps {
 	switch(action.type) {
-		case ActionTypes.INCREMENT_LIKES:
+		case ActionTypes.TOGGLE_LIKE:
       let posts = state.posts;
 
       posts = posts.map(post => {
         if (post._id === action.data._id) {
-          post.likes = action.data.likes;
+          post.likes = action.data.isLiked ? post.likes += 1 : post.likes -= 1;
         }
         return post;
       });

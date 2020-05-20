@@ -9,7 +9,7 @@ import { getPostInfoStateProps } from "../store/selectors";
 import { getPhoto } from '../store/actions'
 import { fetchComments } from '../store/actions';
 import {getAppErrorsStateProps} from '../../../store/selector'
-import { incrementLikes, saveComment, removeComment, removeSinglePost } from '../store/actions';
+import { toggleLike, saveComment, removeComment, removeSinglePost } from '../store/actions';
 import { Link } from 'react-router-dom';
 interface MatchParams {
   postId: string
@@ -25,7 +25,7 @@ interface PostInfoActionProps {
   removeSinglePost: (postId: string) => void;
   getPhoto: (postId: any) => Promise<any>;
   fetchComments: (postId: string) => void;
-  incrementLikes: (postId: string, likes: number) => void;
+  toggleLike: (postId: string, likes: number) => void;
   status: number|null;
 }
 type Props = OwnProps & PostInfoProps & PostInfoActionProps;
@@ -40,7 +40,7 @@ class PostInfoContainer extends React.Component<Props>{
 	render(){
     //we're getting the value from the reducer's state which is getPostInfoStateProps()
     const { postInfo } = this.props;
-   console.log("this.props", this.props)
+ 
 		//get us the post
 		const postComments = postInfo.comments || [];
     
@@ -49,7 +49,7 @@ class PostInfoContainer extends React.Component<Props>{
       {   
         <div className="single-photo">
           <Photo post={postInfo.post} 
-            incrementLikes={() => this.props.incrementLikes(postInfo.post._id, postInfo.post.likes)} 
+            toggleLike={() => this.props.toggleLike(postInfo.post._id, postInfo.post.likes)} 
             {...this.props} 
             removeSinglePost={() => this.props.removeSinglePost(postInfo.post._id)}
             />
@@ -73,7 +73,7 @@ const PostInfo = (connect(mapStateToProps, {
   removeComment: removeComment,
   getPhoto: getPhoto,
   fetchComments: fetchComments,
-  incrementLikes: incrementLikes,
+  toggleLike: toggleLike,
   removeSinglePost: removeSinglePost
 })(PostInfoContainer));
 

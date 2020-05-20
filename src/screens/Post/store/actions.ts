@@ -19,7 +19,7 @@ export enum ActionTypes {
   GET_PHOTO = "GET_PHOTO",
   GET_PHOTO_FAILURE = "GET_PHOTO_FAILURE",
 
-  POSTINFO_INCREMENT_LIKES = "POSTINFO_INCREMENT_LIKES",
+  POSTINFO_TOGGLE_LIKE = "POSTINFO_TOGGLE_LIKE",
 
   GET_POSTLIST_SUCCESS = "GET_POSTLIST_SUCCESS"
 }
@@ -87,11 +87,11 @@ export function getPhoto(postId: string) {
   }
 }
 
-export function incrementLikes(postId: string, likes: number) {
+export function toggleLike(postId: string, likes: number) {
   return (dispatch: any) => {
     return axios.patch(`${apiUrl}/posts/${postId}/likes`, {postId, likes},  {withCredentials: true})
       .then((response) => {
-        dispatch(success(ActionTypes.POSTINFO_INCREMENT_LIKES, response.data.post))
+        dispatch(success(ActionTypes.POSTINFO_TOGGLE_LIKE, response.data))
       })
       .catch((err) => {
         console.log(err);
@@ -118,7 +118,6 @@ export function removeSinglePost(postId: string) {
   return (dispatch: any) => {
     return axios.delete(`${apiUrl}/posts/${postId}/`, {withCredentials: true})
       .then(response => {
-        console.log(response.data)
         dispatch(success(ActionTypes.GET_POSTLIST_SUCCESS, response.data))
       })
       .catch(err=> {

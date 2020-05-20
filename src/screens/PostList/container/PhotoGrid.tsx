@@ -5,7 +5,7 @@ import { getPostListStateProps } from "../store/selectors";
 import { StateProps } from '../../../store/types';
 import { withRouter, RouteComponentProps, Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchLatestPosts, fetchPosts, incrementLikes } from '../store/action'
+import { fetchLatestPosts, fetchPosts, toggleLike } from '../store/action'
 import { getSessionStateProps } from '../../../store/selector'
 import PhotoUpload from '../components/PhotoUpload'
 import { removeSinglePost } from '../store/action'
@@ -26,7 +26,7 @@ interface PostGridActionProps {
   fetchLatestPosts: () => Promise<any>;
   fetchPosts: (page: number) => Promise<any>;
   removeSinglePost: (postId: string) => void;
-  incrementLikes: (postId: string, likes: number) => void;
+  toggleLike: (postId: string, likes: number) => void;
 }
 
 type Props = PhotoGridStateProps & PostGridActionProps & RouteComponentProps;
@@ -45,14 +45,10 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
       fetchLatestPosts();
     }
 
-    window.addEventListener('scroll', (e) => {
-      this.handleScroll(e);
-    })
+    window.addEventListener('scroll', this.handleScroll)
   }
   componentWillUnmount() {
-    window.removeEventListener('scroll', (e) => {
-      this.handleScroll(e);
-    })
+    window.removeEventListener('scroll', this.handleScroll);
   }
 
   loadMore = () => {
@@ -89,7 +85,7 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
 
   }
   handleIncrementLikes(postId: string, likes: number) {
-    this.props.incrementLikes(postId, likes);
+    this.props.toggleLike(postId, likes);
   }
   handleClickRemovePost(postId: string) {
     this.props.removeSinglePost(postId);
@@ -99,7 +95,7 @@ class PhotoGridContainer extends React.Component<Props, InternalStateProps> {
     const postData = posts ? posts.map((post, i)=> 
       {
         return <Photo {...this.props} key={i} post={post} 
-                  incrementLikes={() => this.handleIncrementLikes(post._id, post.likes)} 
+                  toggleLike={() => this.handleIncrementLikes(post._id, post.likes)} 
                   removeSinglePost={() => this.handleClickRemovePost(post._id)} />
       }) : null
 
@@ -135,7 +131,7 @@ const PhotoGrid = (connect(mapStateToProps, {
   fetchLatestPosts: fetchLatestPosts,
   fetchPosts: fetchPosts,
   removeSinglePost: removeSinglePost,
-  incrementLikes: incrementLikes
+  toggleLike: toggleLike
 })(PhotoGridContainer));
 
 export default PhotoGrid;

@@ -6,14 +6,14 @@ import { Post } from '../screens/Post/store/types';
 
 interface PhotoProps {
   post: Post;
-  incrementLikes: (postId: string, likes: number) => void;
+  toggleLike: (postId: string, likes: number) => void;
   removeSinglePost: (postId: string) => void;
 }
 
 class Photo extends React.Component<PhotoProps> {
   
   handleClick = ( postId: string, likes: number) => (e: any) => {
-    this.props.incrementLikes(postId, likes);
+    this.props.toggleLike(postId, likes);
   }
 
 	render(){

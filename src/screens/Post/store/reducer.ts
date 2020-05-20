@@ -1,4 +1,5 @@
 import { PostInfoScreenProps} from './types';
+import { ActionTypes } from './actions';
 
 export const defaultPostInfoScreenProps: PostInfoScreenProps = {
   postInfo: {
@@ -15,19 +16,20 @@ export const defaultPostInfoScreenProps: PostInfoScreenProps = {
 
 export function postComments(state: PostInfoScreenProps = defaultPostInfoScreenProps, action: any) : PostInfoScreenProps {
 	switch(action.type) {
-    case 'POSTINFO_INCREMENT_LIKES': 
+    case ActionTypes.POSTINFO_TOGGLE_LIKE:
+      let likes = state.postInfo.post.likes;
+
       return {
         ...state,
         postInfo: {
           post: {
             ...state.postInfo.post,          
-            likes: action.data.likes,
+            likes: action.data.isLiked ? likes += 1 : likes -= 1,
           },
           comments: state.postInfo.comments
         }  
       }
     case 'FETCH_COMMENTS': 
-    console.log(action.data)
       return {
         ...state,
         postInfo: {

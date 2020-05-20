@@ -4,7 +4,7 @@ const apiUrl = getBaseUrl();
 
 // Action Types
 export enum ActionTypes {
-  INCREMENT_LIKES = 'INCREMENT_LIKES',
+  TOGGLE_LIKE = 'TOGGLE_LIKE',
 
   FETCH_LATEST_POSTS_REQUEST = 'FETCH_LATEST_POSTS_REQUEST',
   FETCH_LATEST_POSTS_SUCCESS = 'FETCH_LATEST_POSTS_SUCCESS',
@@ -20,7 +20,7 @@ export enum ActionTypes {
 
 }
 export interface IncrementAction {
-  type: ActionTypes.INCREMENT_LIKES,
+  type: ActionTypes.TOGGLE_LIKE,
   index: number
 }
 function success(actionType: any, data: any){
@@ -66,11 +66,11 @@ export function fetchPosts(page: number) {
   };
 }
 
-export function incrementLikes(postId: string, likes: number) {
+export function toggleLike(postId: string, likes: number) {
   return (dispatch: any) => {
     return axios.patch(`${apiUrl}/posts/${postId}/likes`, {postId, likes},  {withCredentials: true})
       .then((response) => {
-        dispatch(success(ActionTypes.INCREMENT_LIKES, response.data.post))
+        dispatch(success(ActionTypes.TOGGLE_LIKE, response.data))
       })
       .catch((err) => {
         console.log(err);
