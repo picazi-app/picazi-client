@@ -13,7 +13,6 @@ export const defaultLoginFormProps: LoginFormProps = {
 export function reducers(state: LoginFormProps = defaultLoginFormProps, action: any) : LoginFormProps{
   switch(action.type) {
     case 'LOGIN_SUCCESS':
-      console.log(action.data)
       return {
         ...state,
         status: {

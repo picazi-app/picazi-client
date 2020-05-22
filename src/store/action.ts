@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import getBaseUrl from "../helpers/config.js";
 const apiUrl = getBaseUrl()
-console.log("api URl", apiUrl)
 
 export enum UserActionTypes {
   FETCH_USER_SESSION = "FETCH_USER_SESSION",

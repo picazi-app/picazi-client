@@ -12,10 +12,7 @@ interface Props {
   failure: string | undefined;
 }
 
-class LoginForm extends React.Component<Props> {
-  myClickFunc = () => {
-    console.log('clickity clickcty')
-  }  
+class LoginForm extends React.Component<Props> { 
     render() {     
       const { formErrors, handleChange, handleEmail, handlePassword, handleSubmit, failure } = this.props;    
       const loginError = failure? failure : null;

@@ -248,7 +248,6 @@ class RegisterPage extends React.Component<Props, StateType> {
     }
 }
 function mapStateToProps(state: StateProps){
-  console.log(getRegistrationStateProps(state))
    return {
     status: getRegistrationStateProps(state).status,
     emailExists: getRegistrationStateProps(state).emailExists,

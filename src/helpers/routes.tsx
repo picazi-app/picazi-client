@@ -25,7 +25,6 @@ interface PrivateRouteProps extends RouteProps {
 
 const Auth =  (props: PrivateRouteProps ) => {
   const { component: Component, isLoggedIn, ...rest} = props;
-  console.log(isLoggedIn);
   return (
     <Route
       render={(props) => (
