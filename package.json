@@ -25,7 +25,7 @@
     "@types/redux-devtools-extension": "^2.13.2",
     "autoprefixer": "^9.6.1",
     "autoprefixer-stylus": "^0.14.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "css-loader": "^3.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
